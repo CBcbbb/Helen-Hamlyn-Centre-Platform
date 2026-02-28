@@ -23,7 +23,7 @@ npm start
 
 ## Usage:
 1. Go to http://localhost:3000/admin
-2. Login with password: hhcfd2025
+2. Login with password: hhcfd2026
 3. Edit data
 4. Click "Save All Changes"
 5. Refresh http://localhost:3000 to see changes ✅

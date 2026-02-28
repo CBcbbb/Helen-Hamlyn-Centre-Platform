@@ -9,7 +9,7 @@ const AdminLogin = ({ onLogin }) => {
     e.preventDefault();
     
     // Simple password check (hardcoded)
-    if (password === 'hhcfd2025') {
+    if (password === 'hhcfd2026') {
       onLogin(true);
     } else {
       setError('Incorrect password');

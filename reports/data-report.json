@@ -1,0 +1,27 @@
+{
+  "counts": {
+    "PEOPLE.csv": {
+      "total": 10,
+      "parsed": 10,
+      "skipped": 0
+    },
+    "PROJECTS.csv": {
+      "total": 17,
+      "parsed": 17,
+      "skipped": 0
+    },
+    "INSTITUTIONS.csv": {
+      "total": 9,
+      "parsed": 9,
+      "skipped": 0
+    },
+    "METHODS.csv": {
+      "total": 12,
+      "parsed": 12,
+      "skipped": 0
+    }
+  },
+  "skipped_rows": [],
+  "duplicate_ids": [],
+  "missing_required_fields": []
+}

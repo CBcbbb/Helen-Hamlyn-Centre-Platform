@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
       <div className="prose prose-lg">
         <h2>Data Collection</h2>
         <p>
-          The VOICE Knowledge Platform does not collect, store, or process any personal data from users. 
+          The Helen Hamlyn Centre for Design Data Platform does not collect, store, or process any personal data from users. 
           This website is a static information resource that displays research data without requiring 
           user registration or personal information.
         </p>

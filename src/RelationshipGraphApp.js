@@ -62,7 +62,7 @@ const RelationshipGraphApp = () => {
 
   // Set page title
   useEffect(() => {
-    document.title = 'VOICE Knowledge Platform';
+    document.title = 'Helen Hamlyn Centre for Design Data Platform';
   }, []);
 
   // Global keyboard shortcuts

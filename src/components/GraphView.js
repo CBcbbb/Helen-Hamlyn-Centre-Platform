@@ -257,7 +257,7 @@ const GraphView = ({
         ref={svgRef} 
         className="w-full h-full bg-gradient-to-br from-gray-50 to-white"
         role="img"
-        aria-label="VOICE Project Network Visualization - Interactive network showing relationships between entities across people, institutions, projects, and methods"
+        aria-label="Helen Hamlyn Centre for Design Network Visualization - Interactive network showing relationships between entities across people, institutions, projects, and methods"
       >
       </svg>
  

@@ -9,7 +9,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
       <div className="bg-white rounded-lg shadow border">
         {/* Table description for screen reader users */}
         <div className="sr-only">
-          <h2>VOICE Project Entities Table</h2>
+          <h2>Helen Hamlyn Centre for Design - Entities Table</h2>
           <p>
             Table showing {data.nodes.length} entities organized by type: People, Institutions, Projects, and Methods.
             Each entity can be selected to view detailed information.

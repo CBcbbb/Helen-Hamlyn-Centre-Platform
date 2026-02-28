@@ -6,33 +6,23 @@ const Navigation = ({ isNavExpanded, setIsNavExpanded, setShowModal, data }) => 
   const navItems = [
     { id: 'intro', icon: Info, label: 'Introduction', content: `# About this website
 
-Welcome to the VOICE Knowledge Platform: a rhizomatic map of projects, methods, people, and organisations working at the intersections of art, environmental action, and technology. 
+Welcome to the Helen Hamlyn Centre for Design Data Platform: a rhizomatic map of projects, methods, people, and organisations. 
 
-This platform is an accessible digital resource created for and by artists, researchers, policy makers, community groups and funders. It has been designed to share resources and tools, to offer insights and ideas, and to make the case for the important civic, social, and environmental role this work can play. This platform is designed to grow collaboratively, and we hope you'll [add your own insights, projects and methods](https://docs.google.com/forms/d/e/1FAIpQLSfKmP8cBTo7IZVUqPOAncfjFykxaJktATmOVgiorX3O6CYkkA/viewform)! 
-
-We are using a rhizomatic mapping method – inspired by mycelium and constellations of stars, so that we can showcase the emerging knowledge from the VOICE project and its partners as an interconnected ecosystem. Explore the 'nodes' across this constellation to learn about some of the organisations, methods, artists we've been working with, and projects we've been working on within VOICE so far.
-
-We are still in the pilot phase of this project and would love your feedback and your contributions. Right now, the 'nodes' you'll find in the map are mostly those linked in some way to the VOICE project. Find the speech bubble icon in the bottom left corner to let us know your thoughts and to contribute your own 'nodes' to the map!
+We are using a rhizomatic mapping method – inspired by mycelium and constellations of stars, so that we can showcase the emerging knowledge from the Helen Hamlyn Centre for Design. Explore the 'nodes' across this constellation to learn about some of the organisations, methods we've been working with, and projects we've been working on.
 
 # Core Features
 
-**Network Map View**: Navigate an interactive D3.js-powered visualization displaying relationships between People, Institutions, Projects, and Methods. Each connection represents verified collaborations and influences within the VOICE research ecosystem.
+**Network Map View**: Navigate an interactive D3.js-powered visualization displaying relationships between People, Institutions, Projects, and Methods. Each connection represents verified collaborations and influences within the Helen Hamlyn Centre for Design research ecosystem.
 
 **Simple Table View**: Access the same data through a streamlined, accessible table format for enhanced readability and data analysis.
 
 **Advanced Filtering**: Refine your exploration using category-based filters to focus on specific entity types or relationship patterns.
 
-# About VOICE
+# About Helen Hamlyn Centre for Design
 
-VOICE: Valorising Artist-led Innovation through Citizen Engagement is a European Commission/UKRI funded project (2024-2026) exploring how artist-led innovation can address pressing societal and environmental challenges through active citizen engagement. It is a European-wide collaboration between Inova+, WAAG FutureLab, University College of Dublin, Future Focus 21c, EURICE, RISE, Royal College of Art, and Brunel University of London. 
- 
-Using a combination of Inclusive Design and The PermaCultural Resilience Praxis, VOICE supports 'artist-driven' interventions, formulated as Art-Technology-Society Interactions (ATSI), to enable co-designed solutions to remedy regional or local challenges related to environmental and ecological sustainability.
- 
-Learn more about VOICE [here](https://www.voice-community.eu/).
+The Helen Hamlyn Centre for Design is a global leader in inclusive design and works with government, business, academia and the third sector to conduct research and knowledge exchange projects.
 
----
-
-Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or European Health and Digital Executive Agency (HADEA). Neither the European Union nor the granting authority can be held responsible for them. This work has received funding from the UK research and Innovation under contract number 101135803.` },
+Learn more about the Helen Hamlyn Centre for Design [here](https://www.rca.ac.uk/research-innovation/research-centres/helen-hamlyn-centre/).` },
 
     { id: 'howto', icon: HelpCircle, label: 'How to use it', content: `
 **Map View**: Click and drag nodes to explore relationships. Hover over nodes to see connections and discover how different entities collaborate and influence each other.
@@ -136,7 +126,7 @@ Once the tool is installed or enabled:
                 <span className="ml-3 text-base text-gray-700">{item.label}</span>
               )}
               <span id={`nav-${item.id}-desc`} className="sr-only">
-                {item.id === 'intro' ? 'Learn about the VOICE Knowledge Platform' :
+                {item.id === 'intro' ? 'Learn about the Helen Hamlyn Centre for Design Data Platform' :
                  item.id === 'howto' ? 'Instructions for using the platform' :
                  item.id === 'accessibility' ? 'Accessibility features and keyboard shortcuts' :
                  item.id === 'translation' ? 'Help with translating this site' :
@@ -153,7 +143,7 @@ Once the tool is installed or enabled:
       {isNavExpanded && data.nodes && (
         <div className="mx-4 mb-20 bg-gray-50 rounded-lg p-3">
           <div className="text-sm text-gray-600 space-y-1">
-            <div className="font-semibold">VOICE Prototype V1</div>
+            <div className="font-semibold">Helen Hamlyn Centre for Design Data Platform</div>
             <div className="text-sm text-gray-500 mb-2">Network Statistics:</div>
             <div>Total Nodes: {data.nodes.length}</div>
             <div>Total Links: {data.links?.length || 0}</div>

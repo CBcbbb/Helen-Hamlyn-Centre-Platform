@@ -9,7 +9,7 @@ const AdminLogin = ({ onLogin }) => {
     e.preventDefault();
     
     // Simple password check (hardcoded)
-    if (password === 'voice2025') {
+    if (password === 'hhcfd2025') {
       onLogin(true);
     } else {
       setError('Incorrect password');
@@ -25,7 +25,7 @@ const AdminLogin = ({ onLogin }) => {
         </div>
         
         <h1 className="text-2xl font-bold text-center mb-2 text-gray-900">
-          VOICE Admin Panel
+          Helen Hamlyn Centre for Design - Admin
         </h1>
         <p className="text-center text-gray-600 mb-8">
           Enter password to continue

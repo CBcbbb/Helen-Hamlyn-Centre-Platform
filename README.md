@@ -1,6 +1,6 @@
-# VOICE Knowledge Platform
+# Helen Hamlyn Centre for Design Data Platform
 
-The VOICE Knowledge Platform is a publicly accessible resource designed for artists, researchers, the public, and funders. This collaborative space enables artists to discover, follow, and adapt methods developed by VOICE artists for their own contexts and creative practices. Using a rhizomatic methodology, this platform displays emerging knowledge from the VOICE project as an interconnected ecosystem. The visualization maps relationships between People, Institutions, Projects, and Methods, revealing the holistic and reciprocal nature of creative research networks.
+The Helen Hamlyn Centre for Design Data Platform is a publicly accessible resource designed for artists, researchers, the public, and funders. This collaborative space enables artists to discover, follow, and adapt methods for their own contexts and creative practices. Using a rhizomatic methodology, this platform displays emerging knowledge from the Helen Hamlyn Centre for Design as an interconnected ecosystem. The visualization maps relationships between People, Institutions, Projects, and Methods, revealing the holistic and reciprocal nature of creative research networks.
 
 ## Features
 

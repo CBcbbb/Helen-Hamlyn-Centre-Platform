@@ -369,7 +369,7 @@ const GraphView = ({
         </div>
       )}
 
-      <div className="absolute bottom-20 right-4 flex flex-col gap-2">
+      <div className="absolute bottom-4 right-4 flex flex-col gap-2">
         <button
           onClick={() => handleZoom('in')}
           className="p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow border"

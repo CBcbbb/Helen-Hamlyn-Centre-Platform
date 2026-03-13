@@ -91,7 +91,7 @@ const Toolbar = ({
           </button>
           
           <button
-            onClick={() => onShowKeyboardHelp && onShowKeyboardHelp()}
+            onClick={() => onShowKeyboardHelp()}
             className="px-3 py-2 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-base"
             aria-label="Show keyboard shortcuts"
             title="Keyboard shortcuts"

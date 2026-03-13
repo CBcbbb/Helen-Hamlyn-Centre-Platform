@@ -43,17 +43,19 @@ const Toolbar = ({
         {/* Search area */}
         <div className="w-full md:flex-1 md:flex md:justify-center">
           <div className="flex items-center w-full md:max-w-md">
-            <Search size={20} className="text-gray-400 mr-3" aria-hidden="true" />
-            <input
-              type="text"
-              role="searchbox"
-              placeholder="Search nodes, descriptions, methods..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="flex-1 outline-none text-base bg-gray-50 px-3 py-2 rounded border"
-              aria-label="Search nodes, descriptions, and methods"
-              aria-describedby={highlightedNodes.size > 0 ? "search-results" : undefined}
-            />
+            <div className="flex-1 relative flex items-center bg-gray-50 rounded border">
+              <Search size={20} className="text-gray-400 absolute left-3 pointer-events-none" aria-hidden="true" />
+              <input
+                type="text"
+                role="searchbox"
+                placeholder="Search nodes, descriptions, methods..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full outline-none text-base bg-transparent pl-10 pr-3 py-2 rounded"
+                aria-label="Search nodes, descriptions, and methods"
+                aria-describedby={highlightedNodes.size > 0 ? "search-results" : undefined}
+              />
+            </div>
             {searchTerm && (
               <button
                 onClick={() => handleSearch('')}

@@ -20,7 +20,12 @@ const Toolbar = ({
       <div className="flex flex-col space-y-3 md:flex-row md:space-y-0 md:items-center md:justify-between">
         {/* Title area and mobile menu button */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
+            <img
+              src={`${process.env.PUBLIC_URL || ''}/logo192.png`}
+              alt="Helen Hamlyn Centre for Design"
+              className="h-8 md:h-10 w-auto object-contain"
+            />
             <h1 className="text-lg md:text-xl font-bold text-gray-900">
               Helen Hamlyn Centre for Design Data Platform
             </h1>

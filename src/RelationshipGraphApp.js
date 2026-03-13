@@ -40,16 +40,48 @@ const RelationshipGraphApp = () => {
     setViewMode(mode);
   }, []);
 
-  // Load data
+  // Load data (nodes from JSON, links from CSV)
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Load base node data
         const response = await fetch('/data/graphData.json');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
+
         const jsonData = await response.json();
-        setData(jsonData);
+
+        // Load link data from CSV and merge into graph structure
+        const linksResponse = await fetch('/data/LINKS.csv');
+        if (!linksResponse.ok) {
+          throw new Error('Failed to fetch links data');
+        }
+
+        const csvText = await linksResponse.text();
+        const rows = csvText.trim().split('\n').filter(line => line.trim().length > 0);
+
+        // Expect header: SourceType,SourceID,TargetType,TargetID,Strength
+        const [headerLine, ...dataLines] = rows;
+        const headers = headerLine.split(',').map(h => h.trim());
+
+        const sourceIdIndex = headers.indexOf('SourceID');
+        const targetIdIndex = headers.indexOf('TargetID');
+        const strengthIndex = headers.indexOf('Strength');
+
+        const links = dataLines.map(line => {
+          const cols = line.split(',').map(c => c.trim());
+          return {
+            source: cols[sourceIdIndex],
+            target: cols[targetIdIndex],
+            strength: strengthIndex !== -1 && cols[strengthIndex] ? Number(cols[strengthIndex]) || 1 : 1
+          };
+        }).filter(link => link.source && link.target);
+
+        setData({
+          ...jsonData,
+          links
+        });
         setLoading(false);
       } catch (err) {
         setError(err.message);

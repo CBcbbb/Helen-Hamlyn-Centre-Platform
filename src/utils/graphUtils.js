@@ -9,10 +9,6 @@ export const getNodeColor = (type) => {
   }
 };
 
-export const getLinkColor = (relationship) => {
-  return '#999'; 
-};
-
 export const getFilteredData = (data, visibleTypes) => {
   const filteredNodes = data.nodes.filter(node => visibleTypes[node.type]);
   const filteredNodeIds = new Set(filteredNodes.map(n => n.id));

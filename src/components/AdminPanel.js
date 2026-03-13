@@ -141,14 +141,14 @@ const AdminPanel = ({ onLogout }) => {
             Add Person
           </button>
           <button
-            onClick={() => handleAddNode('Institutions')}
+            onClick={() => handleAddNode('Partners')}
             className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors"
             style={{ backgroundColor: '#DC2680' }}
             onMouseEnter={(e) => e.target.style.backgroundColor = '#b01e68'}
             onMouseLeave={(e) => e.target.style.backgroundColor = '#DC2680'}
           >
             <Plus size={18} />
-            Add Institution
+            Add Partner
           </button>
           <button
             onClick={() => handleAddNode('Projects')}
@@ -174,7 +174,7 @@ const AdminPanel = ({ onLogout }) => {
 
         {/* Data Tables */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {['People', 'Institutions', 'Projects', 'Methods'].map(type => (
+          {['People', 'Partners', 'Projects', 'Methods'].map(type => (
             <div key={type} className="bg-white rounded-lg shadow p-6">
               <h2 className="text-xl font-bold mb-4 text-gray-900">
                 {type} ({data.nodes.filter(n => n.type === type).length})
@@ -277,7 +277,7 @@ const AdminPanel = ({ onLogout }) => {
                   </>
                 )}
 
-                {editingNode.type === 'Institutions' && (
+                {editingNode.type === 'Partners' && (
                   <>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Bio (separate paragraphs with double line break)</label>
@@ -382,7 +382,7 @@ const AdminPanel = ({ onLogout }) => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Involved Institutions</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Involved Partners</label>
                       <textarea
                         value={editingNode.involved_institutions || ''}
                         onChange={(e) => setEditingNode({ ...editingNode, involved_institutions: e.target.value })}

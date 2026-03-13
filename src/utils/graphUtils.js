@@ -2,7 +2,7 @@
 export const getNodeColor = (type) => {
   switch (type) {
     case 'People': return '#5F5BA3';     
-    case 'Institutions': return '#DC2680'; 
+    case 'Partners': return '#DC2680'; 
     case 'Projects': return '#EB631A';    
     case 'Methods': return '#148D66';   
     default: return '#999';

@@ -12,7 +12,7 @@ We are using a rhizomatic mapping method – inspired by mycelium and constellat
 
 # Core Features
 
-**Network Map View**: Navigate an interactive D3.js-powered visualization displaying relationships between People, Institutions, Projects, and Methods. Each connection represents verified collaborations and influences within the Helen Hamlyn Centre for Design research ecosystem.
+**Network Map View**: Navigate an interactive D3.js-powered visualization displaying relationships between People, Partners, Projects, and Methods. Each connection represents verified collaborations and influences within the Helen Hamlyn Centre for Design research ecosystem.
 
 **Simple Table View**: Access the same data through a streamlined, accessible table format for enhanced readability and data analysis.
 
@@ -148,7 +148,7 @@ Once the tool is installed or enabled:
             <div>Total Nodes: {data.nodes.length}</div>
             <div>Total Links: {data.links?.length || 0}</div>
             <div>People: {data.nodes.filter(n => n.type === 'People').length}</div>
-            <div>Institutions: {data.nodes.filter(n => n.type === 'Institutions').length}</div>
+            <div>Partners: {data.nodes.filter(n => n.type === 'Partners').length}</div>
             <div>Projects: {data.nodes.filter(n => n.type === 'Projects').length}</div>
             <div>Methods: {data.nodes.filter(n => n.type === 'Methods').length}</div>
           </div>

@@ -35,10 +35,10 @@ const PROJECTS_HEADERS = {
   'What kind of budget was it? [text]': 'budget',
   'What methods were used? [text]': 'methods',
   'Website / Links to videos [link]': 'website',
-  'Who was involved (Institutions: funded / presented / supported ) [text]': 'involved_institutions'
+  'Who was involved (Partners: funded / presented / supported ) [text]': 'involved_institutions'
 };
 
-const INSTITUTIONS_HEADERS = {
+const PARTNERS_HEADERS = {
   ID: 'id',
   'Name [text]': 'name',
   'Bio [text]': 'bio',
@@ -61,7 +61,7 @@ const METHODS_HEADERS = {
 const FILE_CONFIG = [
   { file: 'PEOPLE.csv', type: 'People', headers: PEOPLE_HEADERS },
   { file: 'PROJECTS.csv', type: 'Projects', headers: PROJECTS_HEADERS },
-  { file: 'INSTITUTIONS.csv', type: 'Institutions', headers: INSTITUTIONS_HEADERS },
+  { file: 'PARTNERS.csv', type: 'Partners', headers: PARTNERS_HEADERS },
   { file: 'METHODS.csv', type: 'Methods', headers: METHODS_HEADERS }
 ];
 

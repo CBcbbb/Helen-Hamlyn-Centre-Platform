@@ -11,7 +11,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
         <div className="sr-only">
           <h2>Helen Hamlyn Centre for Design - Entities Table</h2>
           <p>
-            Table showing {data.nodes.length} entities organized by type: People, Institutions, Projects, and Methods.
+            Table showing {data.nodes.length} entities organized by type: People, Partners, Projects, and Methods.
             Each entity can be selected to view detailed information.
           </p>
         </div>
@@ -34,7 +34,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
           </div>
           <div className="flex items-center" role="columnheader">
             <div className="w-4 h-4 rounded mr-2" style={{backgroundColor: '#DC2680'}} aria-hidden="true"></div>
-            Institutions ({data.nodes.filter(n => n.type === 'Institutions' && visibleTypes.Institutions).length})
+            Partners ({data.nodes.filter(n => n.type === 'Partners' && visibleTypes.Partners).length})
           </div>
           <div className="flex items-center" role="columnheader">
             <div className="w-4 h-4 rounded mr-2" style={{backgroundColor: '#EB631A'}} aria-hidden="true"></div>
@@ -91,10 +91,10 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
             </div>
           </div>
 
-          <div role="gridcell" aria-label="Institutions entities">
-            <h3 className="sr-only">Institutions</h3>
+          <div role="gridcell" aria-label="Partners entities">
+            <h3 className="sr-only">Partners</h3>
             <div className="space-y-3">
-            {data.nodes.filter(n => n.type === 'Institutions' && visibleTypes.Institutions).map((node, index) => (
+            {data.nodes.filter(n => n.type === 'Partners' && visibleTypes.Partners).map((node, index) => (
               <button
                 key={node.id}
                 onClick={() => onNodeSelection(node)}
@@ -105,7 +105,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                   backgroundColor: highlightedNodes.has(node.id) ? '#F6FFFF' : '#FFF6FB',
                   borderColor: highlightedNodes.has(node.id) ? '#00837F' : 'rgba(220, 38, 128, 0.5)'
                 }}
-                aria-label={`View details for ${node.name}, institution ${index + 1} of ${data.nodes.filter(n => n.type === 'Institutions' && visibleTypes.Institutions).length}`}
+                aria-label={`View details for ${node.name}, partner ${index + 1} of ${data.nodes.filter(n => n.type === 'Partners' && visibleTypes.Partners).length}`}
                 {...(node.bio && { 'aria-describedby': `node-${node.id}-summary` })}
               >
                 <div className="font-medium text-base text-gray-900">{node.name}</div>

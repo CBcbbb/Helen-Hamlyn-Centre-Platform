@@ -1,12 +1,12 @@
 # Helen Hamlyn Centre for Design Data Platform
 
-The Helen Hamlyn Centre for Design Data Platform is a publicly accessible resource designed for artists, researchers, the public, and funders. This collaborative space enables artists to discover, follow, and adapt methods for their own contexts and creative practices. Using a rhizomatic methodology, this platform displays emerging knowledge from the Helen Hamlyn Centre for Design as an interconnected ecosystem. The visualization maps relationships between People, Institutions, Projects, and Methods, revealing the holistic and reciprocal nature of creative research networks.
+The Helen Hamlyn Centre for Design Data Platform is a publicly accessible resource designed for artists, researchers, the public, and funders. This collaborative space enables artists to discover, follow, and adapt methods for their own contexts and creative practices. Using a rhizomatic methodology, this platform displays emerging knowledge from the Helen Hamlyn Centre for Design as an interconnected ecosystem. The visualization maps relationships between People, Partners, Projects, and Methods, revealing the holistic and reciprocal nature of creative research networks.
 
 ## Features
 
 - **Dual View Modes**: Interactive D3.js graph visualization and accessible table view
 - **Real-time Search**: Instant node highlighting and filtering capabilities
-- **Type Filtering**: Filter by People, Institutions, Projects, and Methods
+- **Type Filtering**: Filter by People, Partners, Projects, and Methods
 - **Full Accessibility**: WCAG-compliant with screen reader support and keyboard navigation
 - **Responsive Design**: Optimized for all screen sizes and devices
 
@@ -78,7 +78,7 @@ The application expects JSON data in `public/data/graphData.json`:
     {
       "id": "unique-identifier",
       "name": "Node Name",
-      "type": "People|Institutions|Projects|Methods",
+      "type": "People|Partners|Projects|Methods",
       "description": "Detailed description",
       "properties": {
         "custom": "fields"
@@ -97,7 +97,7 @@ The application expects JSON data in `public/data/graphData.json`:
 
 ### Node Types
 - **People**: Researchers, experts, individuals
-- **Institutions**: Universities, organizations, companies
+- **Partners**: Universities, organizations, companies
 - **Projects**: Research projects, initiatives
 - **Methods**: Techniques, methodologies, approaches
 
@@ -110,7 +110,7 @@ Modify node colors in `src/utils/graphUtils.js`:
 export const getNodeColor = (type) => {
   const colors = {
     People: '#3b82f6',
-    Institutions: '#10b981',
+    Partners: '#10b981',
     Projects: '#f59e0b',
     Methods: '#8b5cf6'
   };

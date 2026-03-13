@@ -257,7 +257,7 @@ const GraphView = ({
         ref={svgRef} 
         className="w-full h-full bg-gradient-to-br from-gray-50 to-white"
         role="img"
-        aria-label="Helen Hamlyn Centre for Design Network Visualization - Interactive network showing relationships between entities across people, institutions, projects, and methods"
+        aria-label="Helen Hamlyn Centre for Design Network Visualization - Interactive network showing relationships between entities across people, partners, projects, and methods"
       >
       </svg>
  
@@ -270,7 +270,7 @@ const GraphView = ({
         <div className="space-y-3">
           {[
             { type: 'People', color: '#5F5BA3', count: data.nodes?.filter(n => n.type === 'People').length || 0 },
-            { type: 'Institutions', color: '#DC2680', count: data.nodes?.filter(n => n.type === 'Institutions').length || 0 },
+            { type: 'Partners', color: '#DC2680', count: data.nodes?.filter(n => n.type === 'Partners').length || 0 },
             { type: 'Projects', color: '#EB631A', count: data.nodes?.filter(n => n.type === 'Projects').length || 0 },
             { type: 'Methods', color: '#148D66', count: data.nodes?.filter(n => n.type === 'Methods').length || 0 }
           ].map(item => (
@@ -337,7 +337,7 @@ const GraphView = ({
             <div className="space-y-4">
               {[
                 { type: 'People', color: '#5F5BA3', count: data.nodes?.filter(n => n.type === 'People').length || 0 },
-                { type: 'Institutions', color: '#DC2680', count: data.nodes?.filter(n => n.type === 'Institutions').length || 0 },
+                { type: 'Partners', color: '#DC2680', count: data.nodes?.filter(n => n.type === 'Partners').length || 0 },
                 { type: 'Projects', color: '#EB631A', count: data.nodes?.filter(n => n.type === 'Projects').length || 0 },
                 { type: 'Methods', color: '#148D66', count: data.nodes?.filter(n => n.type === 'Methods').length || 0 }
               ].map(item => (

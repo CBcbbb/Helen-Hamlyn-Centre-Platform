@@ -25,7 +25,7 @@ const RelationshipGraphApp = () => {
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
   const [visibleTypes, setVisibleTypes] = useState({
     People: true,
-    Institutions: true,
+    Partners: true,
     Projects: true,
     Methods: true
   });

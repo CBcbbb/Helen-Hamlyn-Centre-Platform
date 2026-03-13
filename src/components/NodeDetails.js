@@ -308,8 +308,8 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
             </>
           )}
           
-          {/* Institutions node fields */}
-          {selectedNode.type === 'Institutions' && (
+          {/* Partners node fields */}
+          {selectedNode.type === 'Partners' && (
             <>
               <div>
                 <h3 className="font-semibold mb-3 text-gray-800 border-b border-gray-200 pb-2 text-lg">Bio</h3>
@@ -512,7 +512,7 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
               </div>
               
               <div>
-                <h3 className="font-semibold mb-3 text-gray-800 border-b border-gray-200 pb-2 text-lg">Who was involved (Institutions)</h3>
+                <h3 className="font-semibold mb-3 text-gray-800 border-b border-gray-200 pb-2 text-lg">Who was involved (Partners)</h3>
                 <p className="text-base text-gray-700 leading-relaxed field-content">
                   {selectedNode.involved_institutions || '/'}
                 </p>

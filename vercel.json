@@ -5,7 +5,7 @@
       "destination": "/index.html"
     },
     {
-      "source": "^/(?!data/)(.*)$",
+      "source": "/((?!data/).*)",
       "destination": "/index.html"
     }
   ]

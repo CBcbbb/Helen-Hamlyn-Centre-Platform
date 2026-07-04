@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom brand focus ring */
+.focus-ring-brand:focus {
+  box-shadow: 0 0 0 2px rgba(0, 131, 127, 1) !important;
+  outline: none !important;
+}
+
+/* Node details field content - supports line breaks */
+.field-content {
+  white-space: pre-line;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px; 
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* SVG 跨浏览器兼容性优化 */
+svg {
+  /* 确保SVG在所有浏览器中正确渲染 */
+  shape-rendering: optimizeSpeed;
+  text-rendering: optimizeSpeed;
+  color-rendering: optimizeSpeed;
+}
+
+/* Safari 专用的 SVG 文本渲染优化 */
+svg text {
+  /* 确保文本在Safari中正确显示 */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+  /* 改善文本渲染质量 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* 确保字体加载 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+/* SVG 节点交互优化 */
+svg g.nodes g {
+  /* 确保变换原点正确 */
+  transform-origin: center center;
+  transform-box: fill-box;
+  
+  /* 改善交互性能 */
+  will-change: transform;
+}
+
+/* Safari transform 兼容性 */
+@supports (-webkit-appearance: none) {
+  svg g.nodes g {
+    /* Safari 特定的变换优化 */
+    -webkit-transform-origin: center center;
+    -webkit-transform-style: preserve-3d;
+  }
+}
+
+/* 焦点指示器 */
+.focus\:ring-2:focus {
+  box-shadow: 0 0 0 2px rgba(0, 131, 127, 1);
+}
+
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: #00837F;
+}
+
+/* 确保焦点可见 */
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible,
+a:focus-visible {
+  outline: 2px solid #00837F;
+  outline-offset: 2px;
+}
+
+/* 跳过链接 */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* 减少动画偏好支持 */
+@media (prefers-reduced-motion: reduce) {
+  .transition-all,
+  .transition-colors,
+  .transition-shadow,
+  .transition-transform {
+    transition: none !important;
+  }
+  
+  /* Disable SVG animations */
+  svg * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Improve color contrast to meet WCAG 2.2 AA standards */
+.text-gray-400 {
+  color: #58606B !important; /* Optimized gray, contrast ratio 6.36:1 */
+}
+
+.border-gray-200 {
+  border-color: #E5E7EB !important; /* Lighter divider color */
+}
+
+/* 高对比度支持 */
+@media (prefers-contrast: high) {
+  .bg-gray-50 {
+    background-color: #ffffff;
+  }
+  
+  .bg-gray-100 {
+    background-color: #f3f4f6;
+  }
+  
+  .text-gray-600 {
+    color: #000000;
+  }
+  
+  .text-gray-400 {
+    color: #000000 !important; /* Use black in high contrast mode */
+  }
+  
+  .border-gray-200 {
+    border-color: #000000 !important;
+  }
+  
+  /* High contrast SVG optimization */
+  svg text {
+    stroke: none;
+    fill: #000000;
+  }
+  
+  svg rect {
+    stroke: #000000;
+    stroke-width: 2px;
+  }
+}

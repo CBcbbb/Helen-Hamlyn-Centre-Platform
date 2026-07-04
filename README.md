@@ -9,6 +9,7 @@ The Helen Hamlyn Centre for Design Data Platform is a publicly accessible resour
 - **Type Filtering**: Filter by People, Partners, Projects, and Methods
 - **Full Accessibility**: WCAG-compliant with screen reader support and keyboard navigation
 - **Responsive Design**: Optimized for all screen sizes and devices
+- **Admin Panel**: Password-protected `/admin` route for editing node data, with direct save support locally and on Vercel (see [ADMIN_GUIDE.md](ADMIN_GUIDE.md))
 
 ## Tech Stack
 
@@ -16,6 +17,7 @@ The Helen Hamlyn Centre for Design Data Platform is a publicly accessible resour
 - **D3.js** 7.9.0 - Data-driven visualizations
 - **Tailwind CSS** 3.4.17 - Utility-first styling
 - **Lucide React** 0.525.0 - Feather-based icon library
+- **Express** / **cors** - Local API server backing the admin save flow
 
 ## Quick Start
 
@@ -33,6 +35,18 @@ npm install
 npm start
 ```
 Opens at http://localhost:3000 (auto-detects available ports)
+
+To use the admin panel locally with direct save (rather than downloading a file), run the frontend and API server together:
+```bash
+npm run dev
+```
+This starts the frontend on http://localhost:3000 and the API server (`local-api-server.js`) on http://localhost:3001. See [ADMIN_GUIDE.md](ADMIN_GUIDE.md) for details.
+
+### Rebuilding the Dataset
+```bash
+npm run data:build
+```
+Converts the CSV sources in `data/` into `public/data/graphData.json` (see [Data Format](#data-format) below).
 
 ### Production Build
 ```bash
@@ -58,17 +72,40 @@ src/
 │   ├── Navigation.js     # Sidebar navigation
 │   ├── Toolbar.js        # Top toolbar with search
 │   ├── NodeDetails.js    # Node information panel
-│   └── KeyboardHelp.js   # Accessibility help modal
+│   ├── KeyboardHelp.js   # Accessibility help modal
+│   ├── Modal.js          # Generic resizable side panel modal
+│   ├── SimpleFeedback.js # Draggable feedback button
+│   ├── AdminRoute.js     # Gates access to the admin panel
+│   ├── AdminLogin.js     # Admin password login form
+│   └── AdminPanel.js     # Admin data editing UI
 ├── utils/
 │   └── graphUtils.js     # Graph data processing utilities
 ├── RelationshipGraphApp.js # Main application component
+├── App.js                # Top-level router (main app vs /admin)
 └── index.js              # Application entry point
 
+api/
+└── save-data.js          # Vercel serverless function for admin saves
+
+scripts/
+└── convert.js            # Converts data/*.csv into public/data/graphData.json
+
+data/
+├── PEOPLE.csv
+├── PARTNERS.csv
+├── PROJECTS.csv
+└── METHODS.csv
+
 public/data/
-└── graphData.json        # Knowledge graph dataset
+├── graphData.json        # Knowledge graph dataset (generated)
+└── LINKS.csv             # Link/relationship source data
+
+local-api-server.js       # Local Express server backing admin saves in dev
 ```
 
 ## Data Format
+
+`public/data/graphData.json` is generated from the CSV files in `data/` via `npm run data:build` (`scripts/convert.js`) — edit the CSVs (or use the admin panel) and rebuild rather than hand-editing the JSON.
 
 The application expects JSON data in `public/data/graphData.json`:
 
@@ -124,6 +161,12 @@ export const getNodeColor = (type) => {
 3. Update data schema accordingly
 
 ## Deployment
+
+### Vercel
+The project is configured for Vercel via `vercel.json`:
+- Rewrites `/admin` to `index.html` so client-side routing handles the admin panel
+- Rewrites everything else (except `/data/*`) to `index.html`
+- `api/save-data.js` runs as a serverless function, so admin saves work in production without the local API server
 
 ### Static Hosting
 ```bash

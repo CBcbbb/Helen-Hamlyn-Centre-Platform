@@ -6,8 +6,7 @@ import SimpleView from './components/SimpleView';
 import NodeDetails from './components/NodeDetails';
 import Modal from './components/Modal';
 import KeyboardHelp from './components/KeyboardHelp';
-import FundingBar from './components/FundingBar';
-import { searchNodes } from './utils/graphUtils';
+import { searchNodes, NODE_TYPES } from './utils/graphUtils';
 
 const RelationshipGraphApp = () => {
   // State management
@@ -23,12 +22,9 @@ const RelationshipGraphApp = () => {
   const [highlightedNodes, setHighlightedNodes] = useState(new Set());
   const [announcements, setAnnouncements] = useState('');
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
-  const [visibleTypes, setVisibleTypes] = useState({
-    People: true,
-    Partners: true,
-    Projects: true,
-    Methods: true
-  });
+  const [visibleTypes, setVisibleTypes] = useState(
+    Object.fromEntries(NODE_TYPES.map(type => [type, true]))
+  );
 
   // Handle node selection
   const handleNodeSelection = useCallback((node) => {
@@ -265,9 +261,6 @@ const RelationshipGraphApp = () => {
       >
         {announcements}
       </div>
-
-      {/* Funding acknowledgment bar */}
-      <FundingBar />
     </div>
   );
 };

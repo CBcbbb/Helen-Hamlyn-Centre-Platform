@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, ExternalLink } from 'lucide-react';
-import { getNodeColor } from '../utils/graphUtils';
+import { getNodeColor, getNodeTint, ACCENT } from '../utils/graphUtils';
 
 const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
   const [width, setWidth] = useState(50);
@@ -240,7 +240,7 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
               
               <div>
                 <h3 className="font-semibold mb-3 text-gray-800 border-b border-gray-200 pb-2 text-lg">Connections to institution</h3>
-                <div className="text-base p-4 rounded-lg border" style={{ backgroundColor: '#F4F3F8', borderColor: '#5F5BA3', color: '#5F5BA3' }}>
+                <div className="text-base p-4 rounded-lg border" style={{ backgroundColor: getNodeTint('People'), borderColor: getNodeColor('People'), color: getNodeColor('People') }}>
                   {selectedNode.connections || '/'}
                 </div>
               </div>
@@ -263,9 +263,9 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
                           rel="noopener noreferrer"
                           className="inline-flex items-center text-base p-3 rounded-lg border font-medium transition-colors hover:opacity-90 w-full"
                           style={{ 
-                            backgroundColor: '#F4F3F8', 
-                            borderColor: '#5F5BA3',
-                            color: '#5F5BA3'
+                            backgroundColor: getNodeTint('People'), 
+                            borderColor: getNodeColor('People'),
+                            color: getNodeColor('People')
                           }}
                           aria-label={`Visit website ${index + 1} (opens in new tab)`}
                         >
@@ -292,9 +292,9 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
                         rel="noopener noreferrer"
                         className="inline-flex items-center text-base p-3 rounded-lg border font-medium transition-colors hover:opacity-90 w-full"
                         style={{ 
-                          backgroundColor: '#F4F3F8', 
-                          borderColor: '#5F5BA3',
-                          color: '#5F5BA3'
+                          backgroundColor: getNodeTint('People'), 
+                          borderColor: getNodeColor('People'),
+                          color: getNodeColor('People')
                         }}
                         aria-label={`Visit social media profile ${index + 1} (opens in new tab)`}
                       >
@@ -344,9 +344,9 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
                           rel="noopener noreferrer"
                           className="inline-flex items-center text-base p-4 rounded-lg border font-medium transition-colors hover:opacity-90"
                           style={{ 
-                            backgroundColor: '#FFF6FB', 
-                            borderColor: '#DC2680',
-                            color: '#DC2680'
+                            backgroundColor: getNodeTint('Partners'), 
+                            borderColor: getNodeColor('Partners'),
+                            color: getNodeColor('Partners')
                           }}
                           aria-label={`Visit institution website (opens in new tab)`}
                         >
@@ -365,9 +365,9 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
                               rel="noopener noreferrer"
                               className="inline-flex items-center text-base p-3 rounded-lg border font-medium transition-colors hover:opacity-90 w-full"
                               style={{ 
-                                backgroundColor: '#FFF6FB', 
-                                borderColor: '#DC2680',
-                                color: '#DC2680'
+                                backgroundColor: getNodeTint('Partners'), 
+                                borderColor: getNodeColor('Partners'),
+                                color: getNodeColor('Partners')
                               }}
                               aria-label={`Visit website ${index + 1} (opens in new tab)`}
                             >
@@ -396,9 +396,9 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
                         rel="noopener noreferrer"
                         className="inline-flex items-center text-base p-3 rounded-lg border font-medium transition-colors hover:opacity-90 w-full"
                         style={{ 
-                          backgroundColor: '#FFF6FB', 
-                          borderColor: '#DC2680',
-                          color: '#DC2680'
+                          backgroundColor: getNodeTint('Partners'), 
+                          borderColor: getNodeColor('Partners'),
+                          color: getNodeColor('Partners')
                         }}
                         aria-label={`Visit social media profile ${index + 1} (opens in new tab)`}
                       >
@@ -457,7 +457,7 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
               <div>
                 <h3 className="font-semibold mb-3 text-gray-800 border-b border-gray-200 pb-2 text-lg">What kind of budget was it?</h3>
                 {selectedNode.budget ? (
-                  <span className="inline-block px-4 py-2 text-base rounded-full font-medium" style={{ backgroundColor: '#FFFAF3', color: '#EB631A' }}>
+                  <span className="inline-block px-4 py-2 text-base rounded-full font-medium" style={{ backgroundColor: getNodeTint('Projects'), color: getNodeColor('Projects') }}>
                     {selectedNode.budget}
                   </span>
                 ) : (
@@ -493,9 +493,9 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
                             rel="noopener noreferrer"
                             className="inline-flex items-center text-base p-3 rounded-lg border font-medium transition-colors hover:opacity-90 w-full"
                             style={{ 
-                              backgroundColor: '#FFFAF3', 
-                              borderColor: '#EB631A',
-                              color: '#EB631A'
+                              backgroundColor: getNodeTint('Projects'), 
+                              borderColor: getNodeColor('Projects'),
+                              color: getNodeColor('Projects')
                             }}
                             aria-label={`${title} (opens in new tab)`}
                           >
@@ -606,7 +606,7 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
               <div>
                 <h3 className="font-semibold mb-3 text-gray-800 border-b border-gray-200 pb-2 text-lg">Category</h3>
                 {selectedNode.category && selectedNode.category !== '/' ? (
-                  <span className="inline-block px-4 py-2 text-base rounded-full font-medium" style={{ backgroundColor: '#EEF9F6', color: '#148D66' }}>
+                  <span className="inline-block px-4 py-2 text-base rounded-full font-medium" style={{ backgroundColor: getNodeTint('Methods'), color: getNodeColor('Methods') }}>
                     {selectedNode.category}
                   </span>
                 ) : (
@@ -653,7 +653,7 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
       <div 
         className="absolute left-0 top-0 w-1 h-full bg-gray-300 cursor-col-resize transition-colors"
         onMouseDown={handleMouseDown}
-        onMouseEnter={(e) => e.target.style.backgroundColor = '#00837F'}
+        onMouseEnter={(e) => e.target.style.backgroundColor = ACCENT}
         onMouseLeave={(e) => e.target.style.backgroundColor = '#d1d5db'}
         title="Drag to resize"
       />

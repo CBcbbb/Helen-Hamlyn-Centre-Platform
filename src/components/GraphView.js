@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { ZoomIn, ZoomOut, Filter, X } from 'lucide-react';
-import { getNodeColor, getFilteredData } from '../utils/graphUtils';
+import { getNodeColor, getFilteredData, NODE_TYPES } from '../utils/graphUtils';
 
 const GraphView = ({ 
   data, 
@@ -251,10 +251,17 @@ const GraphView = ({
     };
   }, [data, visibleTypes, highlightedNodes, onNodeSelection, setZoomLevel]);
 
+  // Filter legend items, shared by the desktop panel and the mobile modal.
+  const filterItems = NODE_TYPES.map(type => ({
+    type,
+    color: getNodeColor(type),
+    count: data.nodes?.filter(n => n.type === type).length || 0
+  }));
+
   return (
     <div className="w-full h-full relative">
-      <svg 
-        ref={svgRef} 
+      <svg
+        ref={svgRef}
         className="w-full h-full bg-gradient-to-br from-gray-50 to-white"
         role="img"
         aria-label="Helen Hamlyn Centre for Design Network Visualization - Interactive network showing relationships between entities across people, partners, projects, and methods"
@@ -268,12 +275,7 @@ const GraphView = ({
           Filters
         </h2>
         <div className="space-y-3">
-          {[
-            { type: 'People', color: '#5F5BA3', count: data.nodes?.filter(n => n.type === 'People').length || 0 },
-            { type: 'Partners', color: '#DC2680', count: data.nodes?.filter(n => n.type === 'Partners').length || 0 },
-            { type: 'Projects', color: '#EB631A', count: data.nodes?.filter(n => n.type === 'Projects').length || 0 },
-            { type: 'Methods', color: '#148D66', count: data.nodes?.filter(n => n.type === 'Methods').length || 0 }
-          ].map(item => (
+          {filterItems.map(item => (
             <div 
               key={item.type} 
               className="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors"
@@ -335,12 +337,7 @@ const GraphView = ({
               </button>
             </div>
             <div className="space-y-4">
-              {[
-                { type: 'People', color: '#5F5BA3', count: data.nodes?.filter(n => n.type === 'People').length || 0 },
-                { type: 'Partners', color: '#DC2680', count: data.nodes?.filter(n => n.type === 'Partners').length || 0 },
-                { type: 'Projects', color: '#EB631A', count: data.nodes?.filter(n => n.type === 'Projects').length || 0 },
-                { type: 'Methods', color: '#148D66', count: data.nodes?.filter(n => n.type === 'Methods').length || 0 }
-              ].map(item => (
+              {filterItems.map(item => (
                 <div 
                   key={item.type} 
                   className="flex items-center cursor-pointer hover:bg-gray-50 p-3 rounded-lg transition-colors"

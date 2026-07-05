@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, X, Eye, EyeOff, Menu } from 'lucide-react';
+import { ACCENT } from '../utils/graphUtils';
 
 const Toolbar = ({ 
   searchTerm, 
@@ -73,7 +74,7 @@ const Toolbar = ({
           <button
             onClick={() => onViewModeChange(viewMode === 'graph' ? 'simple' : 'graph')}
             className="flex items-center px-4 py-2 text-white rounded hover:opacity-90 transition-colors"
-            style={{ backgroundColor: '#00837F' }}
+            style={{ backgroundColor: ACCENT }}
             aria-label={`Switch to ${viewMode === 'graph' ? 'accessible simple table' : 'interactive map'} view`}
           >
             {viewMode === 'graph' ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
@@ -105,7 +106,7 @@ const Toolbar = ({
         <div 
           id="search-results"
           className="mt-2 text-center text-base" 
-          style={{ color: '#00837F' }}
+          style={{ color: ACCENT }}
           role="status"
           aria-live="polite"
         >

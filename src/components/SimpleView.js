@@ -1,5 +1,6 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
+import { getNodeColor, getNodeTint, ACCENT, HIGHLIGHT_BG, NODE_TYPES } from '../utils/graphUtils';
 
 const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) => {
   if (!data || !data.nodes) return null;
@@ -28,22 +29,12 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
           `}
           role="row"
         >
-          <div className="flex items-center" role="columnheader">
-            <div className="w-4 h-4 rounded mr-2" style={{backgroundColor: '#5F5BA3'}} aria-hidden="true"></div>
-            People ({data.nodes.filter(n => n.type === 'People' && visibleTypes.People).length})
-          </div>
-          <div className="flex items-center" role="columnheader">
-            <div className="w-4 h-4 rounded mr-2" style={{backgroundColor: '#DC2680'}} aria-hidden="true"></div>
-            Partners ({data.nodes.filter(n => n.type === 'Partners' && visibleTypes.Partners).length})
-          </div>
-          <div className="flex items-center" role="columnheader">
-            <div className="w-4 h-4 rounded mr-2" style={{backgroundColor: '#EB631A'}} aria-hidden="true"></div>
-            Projects ({data.nodes.filter(n => n.type === 'Projects' && visibleTypes.Projects).length})
-          </div>
-          <div className="flex items-center" role="columnheader">
-            <div className="w-4 h-4 rounded mr-2" style={{backgroundColor: '#148D66'}} aria-hidden="true"></div>
-            Methods ({data.nodes.filter(n => n.type === 'Methods' && visibleTypes.Methods).length})
-          </div>
+          {NODE_TYPES.map(type => (
+            <div key={type} className="flex items-center" role="columnheader">
+              <div className="w-4 h-4 rounded mr-2" style={{backgroundColor: getNodeColor(type)}} aria-hidden="true"></div>
+              {type} ({data.nodes.filter(n => n.type === type && visibleTypes[type]).length})
+            </div>
+          ))}
         </div>
         
         <div 
@@ -70,15 +61,15 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                   highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
                 }`}
                 style={{
-                  backgroundColor: highlightedNodes.has(node.id) ? '#F6FFFF' : '#F4F3F8',
-                  borderColor: highlightedNodes.has(node.id) ? '#00837F' : 'rgba(95, 91, 163, 0.5)'
+                  backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('People'),
+                  borderColor: highlightedNodes.has(node.id) ? ACCENT : 'rgba(95, 91, 163, 0.5)'
                 }}
                 aria-label={`View details for ${node.name}, person ${index + 1} of ${data.nodes.filter(n => n.type === 'People' && visibleTypes.People).length}`}
                 {...(node.connections && { 'aria-describedby': `node-${node.id}-summary` })}
               >
                 <div className="font-medium text-base text-gray-900">{node.name}</div>
                 {node.connections && (
-                  <div id={`node-${node.id}-summary`} className="text-sm mt-1 line-clamp-2" style={{ color: '#5F5BA3' }}>{node.connections}</div>
+                  <div id={`node-${node.id}-summary`} className="text-sm mt-1 line-clamp-2" style={{ color: getNodeColor('People') }}>{node.connections}</div>
                 )}
                 <div className="text-sm text-gray-400 mt-1 truncate">
                   {Array.isArray(node.bio) 
@@ -102,8 +93,8 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                   highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
                 }`}
                 style={{
-                  backgroundColor: highlightedNodes.has(node.id) ? '#F6FFFF' : '#FFF6FB',
-                  borderColor: highlightedNodes.has(node.id) ? '#00837F' : 'rgba(220, 38, 128, 0.5)'
+                  backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Partners'),
+                  borderColor: highlightedNodes.has(node.id) ? ACCENT : 'rgba(220, 38, 128, 0.5)'
                 }}
                 aria-label={`View details for ${node.name}, partner ${index + 1} of ${data.nodes.filter(n => n.type === 'Partners' && visibleTypes.Partners).length}`}
                 {...(node.bio && { 'aria-describedby': `node-${node.id}-summary` })}
@@ -118,7 +109,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                   </div>
                 )}
                 {node.website && (
-                  <div className="text-sm mt-1 flex items-center" style={{ color: '#DC2680' }}>
+                  <div className="text-sm mt-1 flex items-center" style={{ color: getNodeColor('Partners') }}>
                     <ExternalLink size={10} className="mr-1" aria-hidden="true" />
                     Website
                   </div>
@@ -139,8 +130,8 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                   highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
                 }`}
                 style={{
-                  backgroundColor: highlightedNodes.has(node.id) ? '#F6FFFF' : '#FFFAF3',
-                  borderColor: highlightedNodes.has(node.id) ? '#00837F' : 'rgba(235, 98, 26, 0.5)'
+                  backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Projects'),
+                  borderColor: highlightedNodes.has(node.id) ? ACCENT : 'rgba(235, 98, 26, 0.5)'
                 }}
                 aria-label={`View details for ${node.name}, project ${index + 1} of ${data.nodes.filter(n => n.type === 'Projects' && visibleTypes.Projects).length}`}
                 {...(node.description && { 'aria-describedby': `node-${node.id}-summary` })}
@@ -170,15 +161,15 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                   highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
                 }`}
                 style={{
-                  backgroundColor: highlightedNodes.has(node.id) ? '#F6FFFF' : '#EEF9F6',
-                  borderColor: highlightedNodes.has(node.id) ? '#00837F' : 'rgba(20, 141, 102, 0.5)'
+                  backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Methods'),
+                  borderColor: highlightedNodes.has(node.id) ? ACCENT : 'rgba(20, 141, 102, 0.5)'
                 }}
                 aria-label={`View details for ${node.name}, method ${index + 1} of ${data.nodes.filter(n => n.type === 'Methods' && visibleTypes.Methods).length}`}
                 {...(node.description && { 'aria-describedby': `node-${node.id}-summary` })}
               >
                 <div className="font-medium text-base text-gray-900">{node.name}</div>
                 {node.category && (
-                  <div className="text-sm text-white mt-1 inline-block px-2 py-1 rounded" style={{ backgroundColor: '#148D66' }}>
+                  <div className="text-sm text-white mt-1 inline-block px-2 py-1 rounded" style={{ backgroundColor: getNodeColor('Methods') }}>
                     {node.category}
                   </div>
                 )}

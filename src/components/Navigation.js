@@ -1,6 +1,7 @@
 import React from 'react';
 import { Info, HelpCircle, Accessibility, Languages, Menu  } from 'lucide-react';
 import SimpleFeedback from './SimpleFeedback';
+import { NODE_TYPES } from '../utils/graphUtils';
 
 const Navigation = ({ isNavExpanded, setIsNavExpanded, setShowModal, data }) => {
   const navItems = [
@@ -147,10 +148,9 @@ Once the tool is installed or enabled:
             <div className="text-sm text-gray-500 mb-2">Network Statistics:</div>
             <div>Total Nodes: {data.nodes.length}</div>
             <div>Total Links: {data.links?.length || 0}</div>
-            <div>People: {data.nodes.filter(n => n.type === 'People').length}</div>
-            <div>Partners: {data.nodes.filter(n => n.type === 'Partners').length}</div>
-            <div>Projects: {data.nodes.filter(n => n.type === 'Projects').length}</div>
-            <div>Methods: {data.nodes.filter(n => n.type === 'Methods').length}</div>
+            {NODE_TYPES.map(type => (
+              <div key={type}>{type}: {data.nodes.filter(n => n.type === type).length}</div>
+            ))}
           </div>
         </div>
       )}

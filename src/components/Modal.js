@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { ACCENT } from '../utils/graphUtils';
 
 const Modal = ({ showModal, setShowModal }) => {
   const [width, setWidth] = useState(50);
@@ -183,7 +184,7 @@ const Modal = ({ showModal, setShowModal }) => {
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="hover:underline"
-                          style={{ color: '#00837F', fontWeight: 'bold' }}
+                          style={{ color: ACCENT, fontWeight: 'bold' }}
                         >
                           {match[1]}
                         </a>
@@ -243,7 +244,7 @@ const Modal = ({ showModal, setShowModal }) => {
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="hover:underline"
-                      style={{ color: '#00837F', fontWeight: 'bold' }}
+                      style={{ color: ACCENT, fontWeight: 'bold' }}
                     >
                       {match[1]}
                     </a>
@@ -303,9 +304,9 @@ const Modal = ({ showModal, setShowModal }) => {
       
       <div 
         className="hidden md:block absolute right-0 top-0 w-1 h-full bg-gray-300 cursor-col-resize transition-colors"
-        style={{ ':hover': { backgroundColor: '#00837F' } }}
+        style={{ ':hover': { backgroundColor: ACCENT } }}
         onMouseDown={handleMouseDown}
-        onMouseEnter={(e) => e.target.style.backgroundColor = '#00837F'}
+        onMouseEnter={(e) => e.target.style.backgroundColor = ACCENT}
         onMouseLeave={(e) => e.target.style.backgroundColor = '#d1d5db'}
         title="Drag to resize"
       />

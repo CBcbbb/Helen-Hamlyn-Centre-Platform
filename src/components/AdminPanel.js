@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Plus, Edit, Trash2, LogOut, X } from 'lucide-react';
+import { getNodeColor, getNodeHover, ACCENT, NODE_TYPES } from '../utils/graphUtils';
 
 const AdminPanel = ({ onLogout }) => {
   const [data, setData] = useState(null);
@@ -130,51 +131,29 @@ const AdminPanel = ({ onLogout }) => {
       <div className="max-w-7xl mx-auto p-6">
         {/* Add buttons */}
         <div className="mb-6 flex gap-3">
-          <button
-            onClick={() => handleAddNode('People')}
-            className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors"
-            style={{ backgroundColor: '#5F5BA3' }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#4a4782'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#5F5BA3'}
-          >
-            <Plus size={18} />
-            Add Person
-          </button>
-          <button
-            onClick={() => handleAddNode('Partners')}
-            className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors"
-            style={{ backgroundColor: '#DC2680' }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#b01e68'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#DC2680'}
-          >
-            <Plus size={18} />
-            Add Partner
-          </button>
-          <button
-            onClick={() => handleAddNode('Projects')}
-            className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors"
-            style={{ backgroundColor: '#EB631A' }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#c94f15'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#EB631A'}
-          >
-            <Plus size={18} />
-            Add Project
-          </button>
-          <button
-            onClick={() => handleAddNode('Methods')}
-            className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors"
-            style={{ backgroundColor: '#148D66' }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#107052'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#148D66'}
-          >
-            <Plus size={18} />
-            Add Method
-          </button>
+          {[
+            { type: 'People', label: 'Add Person' },
+            { type: 'Partners', label: 'Add Partner' },
+            { type: 'Projects', label: 'Add Project' },
+            { type: 'Methods', label: 'Add Method' }
+          ].map(({ type, label }) => (
+            <button
+              key={type}
+              onClick={() => handleAddNode(type)}
+              className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors"
+              style={{ backgroundColor: getNodeColor(type) }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = getNodeHover(type)}
+              onMouseLeave={(e) => e.target.style.backgroundColor = getNodeColor(type)}
+            >
+              <Plus size={18} />
+              {label}
+            </button>
+          ))}
         </div>
 
         {/* Data Tables */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {['People', 'Partners', 'Projects', 'Methods'].map(type => (
+          {NODE_TYPES.map(type => (
             <div key={type} className="bg-white rounded-lg shadow p-6">
               <h2 className="text-xl font-bold mb-4 text-gray-900">
                 {type} ({data.nodes.filter(n => n.type === type).length})
@@ -187,7 +166,7 @@ const AdminPanel = ({ onLogout }) => {
                       <button
                         onClick={() => handleEdit(node)}
                         className="p-2 rounded transition-colors"
-                        style={{ color: '#00837F' }}
+                        style={{ color: ACCENT }}
                         onMouseEnter={(e) => e.target.style.backgroundColor = '#f3f4f6'}
                         onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
                         title="Edit"
@@ -472,9 +451,9 @@ const AdminPanel = ({ onLogout }) => {
                 <button
                   onClick={handleSaveEdit}
                   className="px-4 py-2 text-white rounded-lg transition-colors"
-                  style={{ backgroundColor: '#00837F' }}
+                  style={{ backgroundColor: ACCENT }}
                   onMouseEnter={(e) => e.target.style.backgroundColor = '#006d69'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = '#00837F'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = ACCENT}
                 >
                   Save Changes
                 </button>

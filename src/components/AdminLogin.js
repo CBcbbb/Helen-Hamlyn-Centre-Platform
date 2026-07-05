@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
+import { ACCENT } from '../utils/graphUtils';
 
 const AdminLogin = ({ onLogin }) => {
   const [password, setPassword] = useState('');
@@ -21,7 +22,7 @@ const AdminLogin = ({ onLogin }) => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
         <div className="flex items-center justify-center mb-6">
-          <Lock size={48} style={{ color: '#00837F' }} />
+          <Lock size={48} style={{ color: ACCENT }} />
         </div>
         
         <h1 className="text-2xl font-bold text-center mb-2 text-gray-900">
@@ -45,8 +46,8 @@ const AdminLogin = ({ onLogin }) => {
                 setError('');
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
-              style={{ outline: 'none', borderColor: password ? '#00837F' : '' }}
-              onFocus={(e) => e.target.style.borderColor = '#00837F'}
+              style={{ outline: 'none', borderColor: password ? ACCENT : '' }}
+              onFocus={(e) => e.target.style.borderColor = ACCENT}
               onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
               placeholder="Enter password"
               autoFocus
@@ -62,9 +63,9 @@ const AdminLogin = ({ onLogin }) => {
           <button
             type="submit"
             className="w-full text-white py-2 rounded-lg transition-colors font-medium"
-            style={{ backgroundColor: '#00837F' }}
+            style={{ backgroundColor: ACCENT }}
             onMouseEnter={(e) => e.target.style.backgroundColor = '#006d69'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#00837F'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = ACCENT}
           >
             Login
           </button>

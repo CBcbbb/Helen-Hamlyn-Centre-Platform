@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { MessageCircle } from 'lucide-react';
+import { ACCENT } from '../utils/graphUtils';
 
 const SimpleFeedback = () => {
   const [position, setPosition] = useState({ x: 10, y: window.innerHeight - 80 });
@@ -46,7 +47,7 @@ const SimpleFeedback = () => {
     >
       <div
         className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow"
-        style={{ backgroundColor: '#00837F' }}
+        style={{ backgroundColor: ACCENT }}
         title="Give Feedback - Drag to move"
       >
         <MessageCircle size={20} className="text-white" />

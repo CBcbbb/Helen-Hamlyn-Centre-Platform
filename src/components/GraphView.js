@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { ZoomIn, ZoomOut, Filter, X } from 'lucide-react';
-import { getNodeColor, getFilteredData, NODE_TYPES } from '../utils/graphUtils';
+import { getNodeColor, getFilteredData, NODE_TYPES, DEFAULT_NODE_COLOR, BORDER_MUTED } from '../utils/graphUtils';
 
 const GraphView = ({ 
   data, 
@@ -136,7 +136,7 @@ const GraphView = ({
       .selectAll('line')
       .data(processedLinks)
       .enter().append('line')
-      .attr('stroke', '#999')
+      .attr('stroke', DEFAULT_NODE_COLOR)
       .attr('stroke-opacity', 0.6)
       .attr('stroke-width', d => Math.sqrt(d.strength) * 2);
 
@@ -285,7 +285,7 @@ const GraphView = ({
                 className={`w-5 h-5 rounded border-2 flex items-center justify-center mr-3 transition-all`}
                 style={{ 
                   backgroundColor: visibleTypes[item.type] ? item.color : 'white',
-                  borderColor: visibleTypes[item.type] ? item.color : '#d1d5db'
+                  borderColor: visibleTypes[item.type] ? item.color : BORDER_MUTED
                 }}
               >
                 {visibleTypes[item.type] && (
@@ -347,7 +347,7 @@ const GraphView = ({
                     className={`w-6 h-6 rounded border-2 flex items-center justify-center mr-4 transition-all`}
                     style={{ 
                       backgroundColor: visibleTypes[item.type] ? item.color : 'white',
-                      borderColor: visibleTypes[item.type] ? item.color : '#d1d5db'
+                      borderColor: visibleTypes[item.type] ? item.color : BORDER_MUTED
                     }}
                   >
                     {visibleTypes[item.type] && (

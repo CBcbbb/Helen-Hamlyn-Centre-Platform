@@ -1,0 +1,56 @@
+/* Design tokens — single source of truth for every color in the app.
+   Read once at load by src/utils/graphUtils.js and referenced directly
+   by src/index.css. See CLAUDE.md for the "adding a node type" workflow. */
+:root {
+  /* Brand accent */
+  --color-accent: #00837F;
+  --color-accent-hover: #006d69;
+  --color-highlight-bg: #F6FFFF;
+
+  /* Node-type palette: base / tint / hover / ring (50%-alpha border) */
+  --color-people: #5F5BA3;
+  --color-people-tint: #F4F3F8;
+  --color-people-hover: #4a4782;
+  --color-people-ring: rgba(95, 91, 163, 0.5);
+
+  --color-partners: #DC2680;
+  --color-partners-tint: #FFF6FB;
+  --color-partners-hover: #b01e68;
+  --color-partners-ring: rgba(220, 38, 128, 0.5);
+
+  --color-projects: #EB631A;
+  --color-projects-tint: #FFFAF3;
+  --color-projects-hover: #c94f15;
+  --color-projects-ring: rgba(235, 99, 26, 0.5);
+
+  --color-methods: #148D66;
+  --color-methods-tint: #EEF9F6;
+  --color-methods-hover: #107052;
+  --color-methods-ring: rgba(20, 141, 102, 0.5);
+
+  /* Fallback node color (edge/link stroke + getNodeColor's fallback) */
+  --color-node-default: #999;
+
+  /* Auto-linked text color inside node detail bodies (all node types) */
+  --color-link: #148D66;
+
+  /* Neutral UI chrome */
+  --color-border-muted: #d1d5db;
+  --color-btn-neutral: #6b7280;
+  --color-btn-neutral-hover: #4b5563;
+  --color-btn-disabled: #9ca3af;
+  --color-btn-subtle-hover: #f3f4f6;
+
+  /* WCAG-AA tuned overrides — do not edit without re-verifying contrast ratio */
+  --color-text-secondary: #58606B; /* contrast ratio 6.36:1 vs white */
+  --color-border-divider: #E5E7EB;
+
+  /* Skip-to-content link */
+  --color-skip-link-bg: #000;
+  --color-skip-link-text: #fff;
+
+  /* prefers-contrast: high overrides */
+  --color-contrast-bg: #ffffff;
+  --color-contrast-bg-alt: #f3f4f6;
+  --color-contrast-ink: #000000;
+}

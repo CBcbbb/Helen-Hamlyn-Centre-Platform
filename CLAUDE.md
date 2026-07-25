@@ -49,10 +49,15 @@ other branch / PR → **preview** deployment with its own URL.
 
 - **DRY — one definition, referenced everywhere.** Shared graph logic lives in
   `src/utils/graphUtils.js` (e.g. `getNodeColor`). Extend it there; never duplicate
-  color maps, type lists, or data-processing logic inside components.
-- **Adding a node type touches exactly three places** (see README "Adding Node
-  Types"): `visibleTypes` in `RelationshipGraphApp.js`, `getNodeColor` in
-  `graphUtils.js`, and the data schema. Don't scatter type constants elsewhere.
+  color maps, type lists, or data-processing logic inside components. Every color
+  value itself lives in `src/globals.css` as a CSS custom property — `graphUtils.js`
+  reads them, it doesn't define them. Never hardcode a hex/rgba literal in a
+  component; add or reuse a `--color-*` variable instead.
+- **Adding a node type touches exactly three places, plus its colors** (see
+  README "Adding Node Types"): `visibleTypes` in `RelationshipGraphApp.js`,
+  `NODE_TYPE_STYLES` in `graphUtils.js`, and the data schema — and defining the
+  matching `--color-<type>` / `-tint` / `-hover` / `-ring` properties in
+  `globals.css`. Don't scatter type constants elsewhere.
 - **Keep the two save backends in sync.** Admin saves go through
   `api/save-data.js` (Vercel serverless, production) and `local-api-server.js`
   (Express, dev). A change to one must be mirrored in the other.

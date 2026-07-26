@@ -4,7 +4,7 @@
 
 /* Custom brand focus ring */
 .focus-ring-brand:focus {
-  box-shadow: 0 0 0 2px rgba(0, 131, 127, 1) !important;
+  box-shadow: 0 0 0 2px var(--color-accent) !important;
   outline: none !important;
 }
 
@@ -75,11 +75,11 @@ svg g.nodes g {
 
 /* 焦点指示器 */
 .focus\:ring-2:focus {
-  box-shadow: 0 0 0 2px rgba(0, 131, 127, 1);
+  box-shadow: 0 0 0 2px var(--color-accent);
 }
 
 .focus\:ring-blue-500:focus {
-  --tw-ring-color: #00837F;
+  --tw-ring-color: var(--color-accent);
 }
 
 /* 确保焦点可见 */
@@ -87,7 +87,7 @@ button:focus-visible,
 input:focus-visible,
 [tabindex]:focus-visible,
 a:focus-visible {
-  outline: 2px solid #00837F;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -96,8 +96,8 @@ a:focus-visible {
   position: absolute;
   top: -40px;
   left: 6px;
-  background: #000;
-  color: #fff;
+  background: var(--color-skip-link-bg);
+  color: var(--color-skip-link-text);
   padding: 8px;
   text-decoration: none;
   border-radius: 4px;
@@ -126,43 +126,43 @@ a:focus-visible {
 
 /* Improve color contrast to meet WCAG 2.2 AA standards */
 .text-gray-400 {
-  color: #58606B !important; /* Optimized gray, contrast ratio 6.36:1 */
+  color: var(--color-text-secondary) !important; /* Optimized gray, contrast ratio 6.36:1 */
 }
 
 .border-gray-200 {
-  border-color: #E5E7EB !important; /* Lighter divider color */
+  border-color: var(--color-border-divider) !important; /* Lighter divider color */
 }
 
 /* 高对比度支持 */
 @media (prefers-contrast: high) {
   .bg-gray-50 {
-    background-color: #ffffff;
+    background-color: var(--color-contrast-bg);
   }
-  
+
   .bg-gray-100 {
-    background-color: #f3f4f6;
+    background-color: var(--color-contrast-bg-alt);
   }
-  
+
   .text-gray-600 {
-    color: #000000;
+    color: var(--color-contrast-ink);
   }
-  
+
   .text-gray-400 {
-    color: #000000 !important; /* Use black in high contrast mode */
+    color: var(--color-contrast-ink) !important; /* Use black in high contrast mode */
   }
-  
+
   .border-gray-200 {
-    border-color: #000000 !important;
+    border-color: var(--color-contrast-ink) !important;
   }
-  
+
   /* High contrast SVG optimization */
   svg text {
     stroke: none;
-    fill: #000000;
+    fill: var(--color-contrast-ink);
   }
-  
+
   svg rect {
-    stroke: #000000;
+    stroke: var(--color-contrast-ink);
     stroke-width: 2px;
   }
 }

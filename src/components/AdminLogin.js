@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
-import { ACCENT } from '../utils/graphUtils';
+import { ACCENT, ACCENT_HOVER, BORDER_MUTED } from '../utils/graphUtils';
 
 const AdminLogin = ({ onLogin }) => {
   const [password, setPassword] = useState('');
@@ -48,7 +48,7 @@ const AdminLogin = ({ onLogin }) => {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
               style={{ outline: 'none', borderColor: password ? ACCENT : '' }}
               onFocus={(e) => e.target.style.borderColor = ACCENT}
-              onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
+              onBlur={(e) => e.target.style.borderColor = BORDER_MUTED}
               placeholder="Enter password"
               autoFocus
             />
@@ -64,7 +64,7 @@ const AdminLogin = ({ onLogin }) => {
             type="submit"
             className="w-full text-white py-2 rounded-lg transition-colors font-medium"
             style={{ backgroundColor: ACCENT }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#006d69'}
+            onMouseEnter={(e) => e.target.style.backgroundColor = ACCENT_HOVER}
             onMouseLeave={(e) => e.target.style.backgroundColor = ACCENT}
           >
             Login

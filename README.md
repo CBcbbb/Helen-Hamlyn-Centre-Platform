@@ -141,23 +141,29 @@ The application expects JSON data in `public/data/graphData.json`:
 ## Configuration
 
 ### Customizing Colors
-Modify node colors in `src/utils/graphUtils.js`:
+Every color in the app is defined once, in `src/globals.css`, as CSS custom
+properties. `src/utils/graphUtils.js` reads them at startup and exposes them
+as JS constants (`getNodeColor`, `ACCENT`, etc.) — to retint, edit the
+variables in `globals.css` only; nothing else needs to change.
 
-```javascript
-export const getNodeColor = (type) => {
-  const colors = {
-    People: '#3b82f6',
-    Partners: '#10b981',
-    Projects: '#f59e0b',
-    Methods: '#8b5cf6'
-  };
-  return colors[type] || '#6b7280';
-};
+```css
+/* src/globals.css */
+:root {
+  --color-people: #5F5BA3;    --color-people-tint: #F4F3F8;   --color-people-hover: #4a4782;
+  --color-partners: #DC2680;  --color-partners-tint: #FFF6FB; --color-partners-hover: #b01e68;
+  --color-projects: #EB631A;  --color-projects-tint: #FFFAF3; --color-projects-hover: #c94f15;
+  --color-methods: #148D66;   --color-methods-tint: #EEF9F6;  --color-methods-hover: #107052;
+
+  --color-accent: #00837F;
+  --color-accent-hover: #006d69;
+}
 ```
 
 ### Adding Node Types
 1. Update `visibleTypes` state in `RelationshipGraphApp.js`
-2. Add color mapping in `getNodeColor` function
+2. Add the type to `NODE_TYPE_STYLES` in `graphUtils.js`, and define its
+   `--color-<type>` / `-tint` / `-hover` / `-ring` custom properties in
+   `src/globals.css`
 3. Update data schema accordingly
 
 ## Deployment

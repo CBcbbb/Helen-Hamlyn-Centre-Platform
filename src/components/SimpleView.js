@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
-import { getNodeColor, getNodeTint, ACCENT, HIGHLIGHT_BG, NODE_TYPES } from '../utils/graphUtils';
+import { getNodeColor, getNodeTint, ACCENT, HIGHLIGHT_BG, NODE_TYPES, NODE_TYPE_STYLES } from '../utils/graphUtils';
 
 const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) => {
   if (!data || !data.nodes) return null;
@@ -62,7 +62,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                 }`}
                 style={{
                   backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('People'),
-                  borderColor: highlightedNodes.has(node.id) ? ACCENT : 'rgba(95, 91, 163, 0.5)'
+                  borderColor: highlightedNodes.has(node.id) ? ACCENT : NODE_TYPE_STYLES.People.ring
                 }}
                 aria-label={`View details for ${node.name}, person ${index + 1} of ${data.nodes.filter(n => n.type === 'People' && visibleTypes.People).length}`}
                 {...(node.connections && { 'aria-describedby': `node-${node.id}-summary` })}
@@ -94,7 +94,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                 }`}
                 style={{
                   backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Partners'),
-                  borderColor: highlightedNodes.has(node.id) ? ACCENT : 'rgba(220, 38, 128, 0.5)'
+                  borderColor: highlightedNodes.has(node.id) ? ACCENT : NODE_TYPE_STYLES.Partners.ring
                 }}
                 aria-label={`View details for ${node.name}, partner ${index + 1} of ${data.nodes.filter(n => n.type === 'Partners' && visibleTypes.Partners).length}`}
                 {...(node.bio && { 'aria-describedby': `node-${node.id}-summary` })}
@@ -131,7 +131,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                 }`}
                 style={{
                   backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Projects'),
-                  borderColor: highlightedNodes.has(node.id) ? ACCENT : 'rgba(235, 98, 26, 0.5)'
+                  borderColor: highlightedNodes.has(node.id) ? ACCENT : NODE_TYPE_STYLES.Projects.ring
                 }}
                 aria-label={`View details for ${node.name}, project ${index + 1} of ${data.nodes.filter(n => n.type === 'Projects' && visibleTypes.Projects).length}`}
                 {...(node.description && { 'aria-describedby': `node-${node.id}-summary` })}
@@ -162,7 +162,7 @@ const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) =
                 }`}
                 style={{
                   backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Methods'),
-                  borderColor: highlightedNodes.has(node.id) ? ACCENT : 'rgba(20, 141, 102, 0.5)'
+                  borderColor: highlightedNodes.has(node.id) ? ACCENT : NODE_TYPE_STYLES.Methods.ring
                 }}
                 aria-label={`View details for ${node.name}, method ${index + 1} of ${data.nodes.filter(n => n.type === 'Methods' && visibleTypes.Methods).length}`}
                 {...(node.description && { 'aria-describedby': `node-${node.id}-summary` })}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Plus, Edit, Trash2, LogOut, X } from 'lucide-react';
-import { getNodeColor, getNodeHover, ACCENT, NODE_TYPES } from '../utils/graphUtils';
+import { getNodeColor, getNodeHover, ACCENT, ACCENT_HOVER, NODE_TYPES, BTN_DISABLED, BTN_NEUTRAL, BTN_NEUTRAL_HOVER, BTN_SUBTLE_HOVER } from '../utils/graphUtils';
 
 const AdminPanel = ({ onLogout }) => {
   const [data, setData] = useState(null);
@@ -106,9 +106,9 @@ const AdminPanel = ({ onLogout }) => {
               onClick={handleSaveAll}
               disabled={saving}
               className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors disabled:bg-gray-400"
-              style={{ backgroundColor: saving ? '#9ca3af' : '#148D66' }}
-              onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = '#107052')}
-              onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = '#148D66')}
+              style={{ backgroundColor: saving ? BTN_DISABLED : getNodeColor('Methods') }}
+              onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = getNodeHover('Methods'))}
+              onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = getNodeColor('Methods'))}
             >
               <Save size={18} />
               {saving ? 'Saving...' : 'Save All Changes'}
@@ -116,9 +116,9 @@ const AdminPanel = ({ onLogout }) => {
             <button
               onClick={onLogout}
               className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors"
-              style={{ backgroundColor: '#6b7280' }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = '#4b5563'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = '#6b7280'}
+              style={{ backgroundColor: BTN_NEUTRAL }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = BTN_NEUTRAL_HOVER}
+              onMouseLeave={(e) => e.target.style.backgroundColor = BTN_NEUTRAL}
             >
               <LogOut size={18} />
               Logout
@@ -167,7 +167,7 @@ const AdminPanel = ({ onLogout }) => {
                         onClick={() => handleEdit(node)}
                         className="p-2 rounded transition-colors"
                         style={{ color: ACCENT }}
-                        onMouseEnter={(e) => e.target.style.backgroundColor = '#f3f4f6'}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = BTN_SUBTLE_HOVER}
                         onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
                         title="Edit"
                       >
@@ -452,7 +452,7 @@ const AdminPanel = ({ onLogout }) => {
                   onClick={handleSaveEdit}
                   className="px-4 py-2 text-white rounded-lg transition-colors"
                   style={{ backgroundColor: ACCENT }}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#006d69'}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = ACCENT_HOVER}
                   onMouseLeave={(e) => e.target.style.backgroundColor = ACCENT}
                 >
                   Save Changes

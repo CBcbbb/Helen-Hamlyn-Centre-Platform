@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { ACCENT } from '../utils/graphUtils';
+import { ACCENT, BORDER_MUTED } from '../utils/graphUtils';
 
 const Modal = ({ showModal, setShowModal }) => {
   const [width, setWidth] = useState(50);
@@ -307,7 +307,7 @@ const Modal = ({ showModal, setShowModal }) => {
         style={{ ':hover': { backgroundColor: ACCENT } }}
         onMouseDown={handleMouseDown}
         onMouseEnter={(e) => e.target.style.backgroundColor = ACCENT}
-        onMouseLeave={(e) => e.target.style.backgroundColor = '#d1d5db'}
+        onMouseLeave={(e) => e.target.style.backgroundColor = BORDER_MUTED}
         title="Drag to resize"
       />
     </div>

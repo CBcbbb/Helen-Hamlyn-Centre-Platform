@@ -1,21 +1,41 @@
 // Node type + color configuration — single source of truth.
-// Adding or retinting a type happens here only (see CLAUDE.md).
+// Values live in src/globals.css; adding or retinting a type means editing
+// the --color-<type> custom properties there AND the mapping below (see CLAUDE.md).
+
+const cssVar = (name) => {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  if (!value && process.env.NODE_ENV !== 'production') {
+    console.warn(`[graphUtils] CSS custom property ${name} is not defined in globals.css`);
+  }
+  return value;
+};
 
 // The canonical, ordered list of node types.
 export const NODE_TYPES = ['People', 'Partners', 'Projects', 'Methods'];
 
-// Per-type palette: base swatch, light tint background, darker hover shade.
+// Per-type palette: base swatch, light tint background, darker hover shade, ring border.
 export const NODE_TYPE_STYLES = {
-  People:   { color: '#5F5BA3', tint: '#F4F3F8', hover: '#4a4782' },
-  Partners: { color: '#DC2680', tint: '#FFF6FB', hover: '#b01e68' },
-  Projects: { color: '#EB631A', tint: '#FFFAF3', hover: '#c94f15' },
-  Methods:  { color: '#148D66', tint: '#EEF9F6', hover: '#107052' },
+  People:   { color: cssVar('--color-people'),   tint: cssVar('--color-people-tint'),   hover: cssVar('--color-people-hover'),   ring: cssVar('--color-people-ring') },
+  Partners: { color: cssVar('--color-partners'), tint: cssVar('--color-partners-tint'), hover: cssVar('--color-partners-hover'), ring: cssVar('--color-partners-ring') },
+  Projects: { color: cssVar('--color-projects'), tint: cssVar('--color-projects-tint'), hover: cssVar('--color-projects-hover'), ring: cssVar('--color-projects-ring') },
+  Methods:  { color: cssVar('--color-methods'),  tint: cssVar('--color-methods-tint'),  hover: cssVar('--color-methods-hover'),  ring: cssVar('--color-methods-ring') },
 };
-export const DEFAULT_NODE_COLOR = '#999';
+export const DEFAULT_NODE_COLOR = cssVar('--color-node-default');
 
 // Brand accent (teal) used across UI chrome + search-highlight colors.
-export const ACCENT = '#00837F';
-export const HIGHLIGHT_BG = '#F6FFFF';
+export const ACCENT = cssVar('--color-accent');
+export const ACCENT_HOVER = cssVar('--color-accent-hover');
+export const HIGHLIGHT_BG = cssVar('--color-highlight-bg');
+
+// Auto-linked text color inside node detail bodies (all node types).
+export const LINK_COLOR = cssVar('--color-link');
+
+// Neutral UI chrome shared across admin/detail panels.
+export const BORDER_MUTED = cssVar('--color-border-muted');
+export const BTN_NEUTRAL = cssVar('--color-btn-neutral');
+export const BTN_NEUTRAL_HOVER = cssVar('--color-btn-neutral-hover');
+export const BTN_DISABLED = cssVar('--color-btn-disabled');
+export const BTN_SUBTLE_HOVER = cssVar('--color-btn-subtle-hover');
 
 export const getNodeColor = (type) => NODE_TYPE_STYLES[type]?.color ?? DEFAULT_NODE_COLOR;
 export const getNodeTint = (type) => NODE_TYPE_STYLES[type]?.tint ?? '#f9fafb';

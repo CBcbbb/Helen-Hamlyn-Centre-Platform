@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, ExternalLink } from 'lucide-react';
-import { getNodeColor, getNodeTint, ACCENT, LINK_COLOR, BORDER_MUTED } from '../utils/graphUtils';
+import { getNodeColor, getNodeTint, ACCENT, LINK_COLOR } from '../utils/graphUtils';
 
 const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
   const [width, setWidth] = useState(50);
@@ -654,7 +654,7 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
         className="absolute left-0 top-0 w-1 h-full bg-gray-300 cursor-col-resize transition-colors"
         onMouseDown={handleMouseDown}
         onMouseEnter={(e) => e.target.style.backgroundColor = ACCENT}
-        onMouseLeave={(e) => e.target.style.backgroundColor = BORDER_MUTED}
+        onMouseLeave={(e) => e.target.style.backgroundColor = ''}
         title="Drag to resize"
       />
     </div>

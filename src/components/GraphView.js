@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { ZoomIn, ZoomOut, Filter, X } from 'lucide-react';
-import { getNodeColor, getFilteredData, NODE_TYPES, DEFAULT_NODE_COLOR, BORDER_MUTED } from '../utils/graphUtils';
+import { getNodeColor, getFilteredData, NODE_TYPES, EDGE_STROKE, BORDER_MUTED } from '../utils/graphUtils';
 
 const GraphView = ({ 
   data, 
@@ -136,7 +136,7 @@ const GraphView = ({
       .selectAll('line')
       .data(processedLinks)
       .enter().append('line')
-      .attr('stroke', DEFAULT_NODE_COLOR)
+      .attr('stroke', EDGE_STROKE)
       .attr('stroke-opacity', 0.6)
       .attr('stroke-width', d => Math.sqrt(d.strength) * 2);
 

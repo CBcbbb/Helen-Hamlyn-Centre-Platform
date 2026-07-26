@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
-import { ACCENT, ACCENT_HOVER, BORDER_MUTED } from '../utils/graphUtils';
+import { ACCENT, ACCENT_HOVER } from '../utils/graphUtils';
 
 const AdminLogin = ({ onLogin }) => {
   const [password, setPassword] = useState('');
@@ -48,7 +48,7 @@ const AdminLogin = ({ onLogin }) => {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
               style={{ outline: 'none', borderColor: password ? ACCENT : '' }}
               onFocus={(e) => e.target.style.borderColor = ACCENT}
-              onBlur={(e) => e.target.style.borderColor = BORDER_MUTED}
+              onBlur={(e) => e.target.style.borderColor = ''}
               placeholder="Enter password"
               autoFocus
             />

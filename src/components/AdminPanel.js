@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Plus, Edit, Trash2, LogOut, X } from 'lucide-react';
-import { getNodeColor, getNodeHover, ACCENT, ACCENT_HOVER, NODE_TYPES, BTN_DISABLED, BTN_NEUTRAL, BTN_NEUTRAL_HOVER, BTN_SUBTLE_HOVER } from '../utils/graphUtils';
+import { getNodeColor, getNodeHover, ACCENT, ACCENT_HOVER, NODE_TYPES, BTN_DISABLED, BTN_NEUTRAL, BTN_NEUTRAL_HOVER, BTN_SUBTLE_HOVER, BTN_SAVE, BTN_SAVE_HOVER } from '../utils/graphUtils';
 
 const AdminPanel = ({ onLogout }) => {
   const [data, setData] = useState(null);
@@ -106,9 +106,9 @@ const AdminPanel = ({ onLogout }) => {
               onClick={handleSaveAll}
               disabled={saving}
               className="flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors disabled:bg-gray-400"
-              style={{ backgroundColor: saving ? BTN_DISABLED : getNodeColor('Methods') }}
-              onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = getNodeHover('Methods'))}
-              onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = getNodeColor('Methods'))}
+              style={{ backgroundColor: saving ? BTN_DISABLED : BTN_SAVE }}
+              onMouseEnter={(e) => !saving && (e.target.style.backgroundColor = BTN_SAVE_HOVER)}
+              onMouseLeave={(e) => !saving && (e.target.style.backgroundColor = BTN_SAVE)}
             >
               <Save size={18} />
               {saving ? 'Saving...' : 'Save All Changes'}

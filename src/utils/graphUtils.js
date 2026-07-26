@@ -4,7 +4,7 @@
 
 const cssVar = (name) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  if (!value && process.env.NODE_ENV !== 'production') {
+  if (!value) {
     console.warn(`[graphUtils] CSS custom property ${name} is not defined in globals.css`);
   }
   return value;
@@ -22,6 +22,9 @@ export const NODE_TYPE_STYLES = {
 };
 export const DEFAULT_NODE_COLOR = cssVar('--color-node-default');
 
+// GraphView relationship-line color — independent from DEFAULT_NODE_COLOR.
+export const EDGE_STROKE = cssVar('--color-edge-stroke');
+
 // Brand accent (teal) used across UI chrome + search-highlight colors.
 export const ACCENT = cssVar('--color-accent');
 export const ACCENT_HOVER = cssVar('--color-accent-hover');
@@ -29,6 +32,10 @@ export const HIGHLIGHT_BG = cssVar('--color-highlight-bg');
 
 // Auto-linked text color inside node detail bodies (all node types).
 export const LINK_COLOR = cssVar('--color-link');
+
+// Admin "save" action buttons — independent from any node-type palette.
+export const BTN_SAVE = cssVar('--color-btn-save');
+export const BTN_SAVE_HOVER = cssVar('--color-btn-save-hover');
 
 // Neutral UI chrome shared across admin/detail panels.
 export const BORDER_MUTED = cssVar('--color-border-muted');
@@ -38,8 +45,9 @@ export const BTN_DISABLED = cssVar('--color-btn-disabled');
 export const BTN_SUBTLE_HOVER = cssVar('--color-btn-subtle-hover');
 
 export const getNodeColor = (type) => NODE_TYPE_STYLES[type]?.color ?? DEFAULT_NODE_COLOR;
-export const getNodeTint = (type) => NODE_TYPE_STYLES[type]?.tint ?? '#f9fafb';
-export const getNodeHover = (type) => NODE_TYPE_STYLES[type]?.hover ?? '#666';
+export const getNodeTint = (type) => NODE_TYPE_STYLES[type]?.tint ?? cssVar('--color-node-default-tint');
+export const getNodeHover = (type) => NODE_TYPE_STYLES[type]?.hover ?? cssVar('--color-node-default-hover');
+export const getNodeRing = (type) => NODE_TYPE_STYLES[type]?.ring ?? cssVar('--color-node-default-ring');
 
 export const getFilteredData = (data, visibleTypes) => {
   const filteredNodes = data.nodes.filter(node => visibleTypes[node.type]);

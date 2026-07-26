@@ -150,9 +150,16 @@ variables in `globals.css` only; nothing else needs to change.
 /* src/globals.css */
 :root {
   --color-people: #5F5BA3;    --color-people-tint: #F4F3F8;   --color-people-hover: #4a4782;
+  --color-people-ring: color-mix(in srgb, var(--color-people) 50%, transparent);
+
   --color-partners: #DC2680;  --color-partners-tint: #FFF6FB; --color-partners-hover: #b01e68;
+  --color-partners-ring: color-mix(in srgb, var(--color-partners) 50%, transparent);
+
   --color-projects: #EB631A;  --color-projects-tint: #FFFAF3; --color-projects-hover: #c94f15;
+  --color-projects-ring: color-mix(in srgb, var(--color-projects) 50%, transparent);
+
   --color-methods: #148D66;   --color-methods-tint: #EEF9F6;  --color-methods-hover: #107052;
+  --color-methods-ring: color-mix(in srgb, var(--color-methods) 50%, transparent);
 
   --color-accent: #00837F;
   --color-accent-hover: #006d69;

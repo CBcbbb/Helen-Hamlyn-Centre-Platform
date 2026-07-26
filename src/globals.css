@@ -7,32 +7,46 @@
   --color-accent-hover: #006d69;
   --color-highlight-bg: #F6FFFF;
 
-  /* Node-type palette: base / tint / hover / ring (50%-alpha border) */
+  /* Node-type palette: base / tint / hover / ring (50%-alpha border, derived) */
   --color-people: #5F5BA3;
   --color-people-tint: #F4F3F8;
   --color-people-hover: #4a4782;
-  --color-people-ring: rgba(95, 91, 163, 0.5);
+  --color-people-ring: color-mix(in srgb, var(--color-people) 50%, transparent);
 
   --color-partners: #DC2680;
   --color-partners-tint: #FFF6FB;
   --color-partners-hover: #b01e68;
-  --color-partners-ring: rgba(220, 38, 128, 0.5);
+  --color-partners-ring: color-mix(in srgb, var(--color-partners) 50%, transparent);
 
   --color-projects: #EB631A;
   --color-projects-tint: #FFFAF3;
   --color-projects-hover: #c94f15;
-  --color-projects-ring: rgba(235, 99, 26, 0.5);
+  --color-projects-ring: color-mix(in srgb, var(--color-projects) 50%, transparent);
 
   --color-methods: #148D66;
   --color-methods-tint: #EEF9F6;
   --color-methods-hover: #107052;
-  --color-methods-ring: rgba(20, 141, 102, 0.5);
+  --color-methods-ring: color-mix(in srgb, var(--color-methods) 50%, transparent);
 
-  /* Fallback node color (edge/link stroke + getNodeColor's fallback) */
+  /* Fallback node color: getNodeColor's fallback for an unrecognized type only.
+     Deliberately separate from --color-edge-stroke below even though both
+     happen to be #999 today — they're unrelated concerns. */
   --color-node-default: #999;
+  --color-node-default-tint: #f9fafb;
+  --color-node-default-hover: #666;
+  --color-node-default-ring: color-mix(in srgb, var(--color-node-default) 50%, transparent);
 
-  /* Auto-linked text color inside node detail bodies (all node types) */
-  --color-link: #148D66;
+  /* GraphView relationship-line color. Independent from --color-node-default. */
+  --color-edge-stroke: #999;
+
+  /* Auto-linked text color inside node detail bodies (all node types).
+     Tied to Methods' color: retinting Methods retints link text too. */
+  --color-link: var(--color-methods);
+
+  /* Admin "save" action buttons. Same value as Methods today, but named for
+     what it means (a save action), not coincidentally borrowed from a node type. */
+  --color-btn-save: #148D66;
+  --color-btn-save-hover: #107052;
 
   /* Neutral UI chrome */
   --color-border-muted: #d1d5db;

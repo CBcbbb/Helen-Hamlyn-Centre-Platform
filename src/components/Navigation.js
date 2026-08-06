@@ -1,6 +1,5 @@
 import React from 'react';
 import { Info, HelpCircle, Accessibility, Languages, Menu  } from 'lucide-react';
-import SimpleFeedback from './SimpleFeedback';
 import { NODE_TYPES } from '../utils/graphUtils';
 
 const Navigation = ({ isNavExpanded, setIsNavExpanded, setShowModal, data }) => {
@@ -138,9 +137,6 @@ Once the tool is installed or enabled:
         })}
       </nav>
 
-      {/* Feedback button - floating independently */}
-      <SimpleFeedback />
-      
       {isNavExpanded && data.nodes && (
         <div className="mx-4 mb-20 bg-gray-50 rounded-lg p-3">
           <div className="text-sm text-gray-600 space-y-1">

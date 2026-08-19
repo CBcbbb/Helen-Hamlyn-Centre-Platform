@@ -175,7 +175,7 @@ const GraphView = ({
       .attr('dominant-baseline', 'central')
       .attr('fill', d => getNodeColor(d.type))
       .style('font-family', '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif')
-      .style('font-size', '20px')
+      .style('font-size', '28px')
       .style('font-weight', '800')
       .style('line-height', '1.2')
       .style('pointer-events', 'none');
@@ -218,7 +218,7 @@ const GraphView = ({
         d3.select(this).select('text')
           .transition()
           .duration(200)
-          .style('font-size', '24px')
+          .style('font-size', '32px')
           .style('font-weight', '900');
         
         // Highlight connected nodes and links
@@ -238,7 +238,7 @@ const GraphView = ({
         d3.select(this).select('text')
           .transition()
           .duration(200)
-          .style('font-size', '20px')
+          .style('font-size', '28px')
           .style('font-weight', '800');
         
         g.selectAll('g.nodes > g').style('opacity', 1);

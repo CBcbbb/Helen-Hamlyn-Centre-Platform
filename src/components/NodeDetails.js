@@ -104,7 +104,7 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
         }
       };
       
-      // Keyboard resize - WCAG 2.2 AA compliant (2.5.7)
+      // Keyboard resize: provides a keyboard alternative to the drag resize interaction.
       const handleKeyResize = (e) => {
         if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
           if (e.key === 'ArrowLeft') {
@@ -166,13 +166,13 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
   return (
     <div 
       className={`
-        fixed bg-white shadow-2xl border-l border-gray-200 z-50 flex flex-col
-        
+        fixed bg-white shadow-2xl border-l border-gray-200 z-50 flex flex-col resizable-panel
+
         md:right-0 md:top-0 md:h-full
-        
+
         inset-0 md:inset-auto
       `}
-      style={{ width: window.innerWidth > 768 ? `${width}%` : '100%' }}
+      style={{ '--panel-width': `${width}%` }}
       role="complementary"
       aria-labelledby="details-title-mobile details-title"
       ref={detailsRef}

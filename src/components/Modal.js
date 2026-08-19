@@ -12,8 +12,7 @@ const Modal = ({ showModal, setShowModal }) => {
 
   useDialogFocusTrap({ isOpen: !!showModal, onClose: handleClose, containerRef: modalRef });
 
-  // Keyboard resize - WCAG 2.2 AA success criterion 2.5.7 (Dragging Movements)
-  // requires a non-drag alternative for this custom resize control.
+  // Keyboard resize: provides a keyboard alternative to the drag resize interaction.
   useEffect(() => {
     if (!showModal) return undefined;
 
@@ -59,50 +58,49 @@ const Modal = ({ showModal, setShowModal }) => {
   };
 
   return (
-    <div 
+    <div
       className={`
-        fixed bg-white shadow-2xl border-gray-200 z-50 flex flex-col
-        
+        fixed bg-white shadow-2xl border-gray-200 z-50 flex flex-col resizable-panel
+
         md:left-0 md:top-0 md:h-full md:border-r
-        
+
         inset-0 md:inset-auto
       `}
-      style={{ width: window.innerWidth > 768 ? `${width}%` : '100%' }}
+      style={{ '--panel-width': `${width}%` }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
       ref={modalRef}
       tabIndex={-1}
     >
-      {/* Mobile top navigation bar */}
-      <div className="flex items-center p-4 border-b bg-gray-50 md:hidden">
+      {/* Modal header — one heading (single accessible name across layouts),
+          responsive classes swap the close-button style and helper text. */}
+      <div className="flex items-center justify-between gap-4 p-4 md:p-6 border-b border-gray-200 bg-gray-50">
         <button
           onClick={() => setShowModal(null)}
-          className="p-2 hover:bg-gray-200 rounded transition-colors"
+          className="md:hidden p-2 hover:bg-gray-200 rounded transition-colors flex-shrink-0"
           aria-label="Close dialog and return to main view"
         >
-          <span className="text-lg">←</span>
+          <span className="text-lg" aria-hidden="true">←</span>
         </button>
-        <h2 className="flex-1 text-center font-bold text-lg">{showModal.label}</h2>
-        <div className="w-10"></div>
-      </div>
-      
-      {/* Desktop modal header */}
-      <div className="hidden md:flex items-center justify-between p-6 border-b border-gray-200 bg-gray-50">
-        <div>
-          <h2 id="modal-title" className="text-2xl font-bold text-gray-900">{showModal.label}</h2>
-          <p className="text-sm text-gray-600 mt-1">
+        <div className="flex-1 min-w-0 text-center md:text-left">
+          <h2 id="modal-title" className="text-lg md:text-2xl font-bold text-gray-900 truncate md:whitespace-normal">
+            {showModal.label}
+          </h2>
+          <p className="hidden md:block text-sm text-gray-600 mt-1">
             Use Ctrl/Cmd + ← → to resize panel, or drag the right edge
           </p>
         </div>
         <button
           onClick={() => setShowModal(null)}
-          className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+          className="hidden md:inline-flex p-2 hover:bg-gray-200 rounded-full transition-colors flex-shrink-0"
           aria-label="Close dialog"
           title="Close"
         >
           <X size={20} className="text-gray-500" aria-hidden="true" />
         </button>
+        {/* Balances the mobile back button's width so the title stays centered on mobile */}
+        <div className="w-10 md:hidden flex-shrink-0" aria-hidden="true"></div>
       </div>
 
       {/* Scrollable content area */}

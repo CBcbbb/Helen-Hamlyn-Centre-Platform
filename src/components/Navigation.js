@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Info, HelpCircle, Accessibility, Languages, Menu  } from 'lucide-react';
 import { NODE_TYPES } from '../utils/graphUtils';
+import useDialogFocusTrap from '../hooks/useDialogFocusTrap';
+
+// Below this width the sidebar is rendered as a full-width modal drawer
+// (matches the md breakpoint used for its layout classes below); at or
+// above it, it's a persistent, non-modal part of the page.
+const MOBILE_BREAKPOINT_QUERY = '(max-width: 767px)';
 
 const Navigation = ({ isNavExpanded, setIsNavExpanded, setShowModal, data }) => {
+  const [isMobileViewport, setIsMobileViewport] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches
+  );
+  const navRef = useRef(null);
+
+  useEffect(() => {
+    const mql = window.matchMedia(MOBILE_BREAKPOINT_QUERY);
+    // Some environments (e.g. devtools viewport overrides) resize the
+    // layout without firing the MediaQueryList's own "change" event, so
+    // re-check matches on a plain window resize too rather than trusting
+    // "change" alone.
+    const update = () => setIsMobileViewport(mql.matches);
+    mql.addEventListener('change', update);
+    window.addEventListener('resize', update);
+    return () => {
+      mql.removeEventListener('change', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  const closeNav = useCallback(() => setIsNavExpanded(false), [setIsNavExpanded]);
+
+  // Only the mobile drawer is modal — desktop's persistent sidebar (expanded
+  // or collapsed) never traps focus or blocks the rest of the page.
+  const isMobileDrawerOpen = isMobileViewport && isNavExpanded;
+  useDialogFocusTrap({ isOpen: isMobileDrawerOpen, onClose: closeNav, containerRef: navRef });
+
   const navItems = [
     { id: 'intro', icon: Info, label: 'Introduction', content: `# About this website
 
@@ -86,23 +119,31 @@ Once the tool is installed or enabled:
     <>
       {/* Mobile overlay - only shown on mobile devices */}
       {isNavExpanded && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-          onClick={() => setIsNavExpanded(false)}
-          aria-label="Close navigation menu"
+          onClick={closeNav}
+          aria-hidden="true"
         />
       )}
-      
-      <div className={`
-        bg-white shadow-lg transition-all duration-300 border-r h-screen flex flex-col
-        
-        fixed md:relative
-        w-full md:w-auto
-        z-50 md:z-auto
-        ${isNavExpanded ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
-        
-        md:${isNavExpanded ? 'w-64' : 'w-16'}
-      `}>
+
+      <div
+        className={`
+          bg-white shadow-lg transition-all duration-300 border-r h-screen flex flex-col
+
+          fixed md:relative
+          w-full md:w-auto
+          z-50 md:z-auto
+          ${isNavExpanded ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
+
+          ${isNavExpanded ? 'md:w-64' : 'md:w-16'}
+        `}
+        ref={navRef}
+        tabIndex={-1}
+        role={isMobileDrawerOpen ? 'dialog' : undefined}
+        aria-modal={isMobileDrawerOpen ? 'true' : undefined}
+        aria-label={isMobileDrawerOpen ? 'Navigation menu' : undefined}
+        inert={isMobileViewport && !isNavExpanded}
+      >
       <div className="p-4">
         <button
           onClick={() => setIsNavExpanded(!isNavExpanded)}
@@ -120,7 +161,13 @@ Once the tool is installed or enabled:
           return (
             <button
               key={item.id}
-              onClick={() => setShowModal(item)}
+              onClick={() => {
+                setShowModal(item);
+                // Close the mobile drawer so it doesn't stack a second,
+                // competing modal (and Escape handler) behind the one that's
+                // about to open. Desktop's persistent sidebar is untouched.
+                if (isMobileDrawerOpen) closeNav();
+              }}
               className={`w-full flex items-center hover:bg-gray-100 transition-colors ${isNavExpanded ? 'p-4 text-left' : 'p-4 justify-center'}`}
               aria-label={`Open ${item.label} dialog`}
               aria-describedby={`nav-${item.id}-desc`}

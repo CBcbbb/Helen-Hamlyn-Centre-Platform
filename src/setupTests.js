@@ -17,3 +17,20 @@ const globalsCss = fs.readFileSync(
 for (const [, name, value] of globalsCss.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) {
   document.documentElement.style.setProperty(name, value.trim());
 }
+
+// jsdom doesn't implement matchMedia. Components (e.g. Navigation.js) that
+// check viewport width via matchMedia need at least a no-op stub so they
+// don't throw under Jest; tests that care about a specific match can
+// override window.matchMedia themselves.
+if (!window.matchMedia) {
+  window.matchMedia = (query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => false,
+  });
+}

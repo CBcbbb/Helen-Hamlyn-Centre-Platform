@@ -16,6 +16,66 @@
   white-space: pre-line;
 }
 
+/* Toolbar responsive composition — grid areas instead of a flex row that
+   collapses at a single breakpoint. Constrained widths stack brand/search/
+   actions vertically; md gives search its own full-width row so it can't be
+   squeezed into an icon; lg is the only width where everything shares one
+   row, and search gets a bounded track so it neither shrinks unusably nor
+   grows unbounded. Breakpoints exist because the composition genuinely
+   changes at each one, not to match named device sizes. */
+.toolbar-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "brand"
+    "search"
+    "actions";
+  gap: 0.75rem;
+}
+
+.toolbar-brand { grid-area: brand; min-width: 0; }
+.toolbar-search { grid-area: search; min-width: 0; }
+.toolbar-actions { grid-area: actions; }
+
+@media (min-width: 768px) {
+  .toolbar-grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand actions"
+      "search search";
+    align-items: center;
+  }
+}
+
+/* Single-row composition needs room for the full title next to a usable
+   search field and the action buttons — that doesn't fit until well past
+   the md/lg breakpoints with this content, so it's deferred to a custom
+   1280px point rather than Tailwind's lg (1024px). */
+@media (min-width: 1280px) {
+  .toolbar-grid {
+    grid-template-columns: minmax(520px, 1fr) minmax(240px, 520px) minmax(300px, auto);
+    grid-template-areas: "brand search actions";
+  }
+}
+
+/* Shared by Modal.js and NodeDetails.js resizable side panels. JS only ever
+   writes the --panel-width custom property; this media query is what
+   decides whether it applies, so a browser resize or orientation change
+   updates the layout without needing a React re-render to re-read
+   window.innerWidth, and mobile/full-screen mode can never inherit a
+   desktop resize state. */
+.resizable-panel {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .resizable-panel {
+    width: var(--panel-width, 50%);
+    min-width: 320px;
+    max-width: 80vw;
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

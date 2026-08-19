@@ -18,22 +18,22 @@ const Toolbar = ({
 
   return (
     <div className="bg-white shadow-sm border-b px-4 md:px-6 py-3">
-      <div className="flex flex-col space-y-3 md:flex-row md:space-y-0 md:items-center md:justify-between">
-        {/* Title area and mobile menu button */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <div className="toolbar-grid">
+        {/* Branding + mobile menu trigger */}
+        <div className="toolbar-brand flex items-center justify-between gap-3 min-w-0">
+          <div className="flex items-center gap-3 min-w-0">
             <img
               src={`${process.env.PUBLIC_URL || ''}/logo192.png`}
               alt="Helen Hamlyn Centre for Design"
-              className="h-8 md:h-10 w-auto object-contain"
+              className="h-8 lg:h-10 w-auto object-contain flex-shrink-0"
             />
-            <h1 className="text-lg md:text-xl font-bold text-gray-900">
+            <h1 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 leading-tight">
               Helen Hamlyn Centre for Design Data Platform
             </h1>
           </div>
           {/* Mobile hamburger menu button */}
-          <button 
-            className="md:hidden p-2 hover:bg-gray-100 rounded transition-colors"
+          <button
+            className="md:hidden p-2 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
             onClick={() => setIsNavExpanded(!isNavExpanded)}
             aria-label={`${isNavExpanded ? 'Close' : 'Open'} navigation menu`}
           >
@@ -42,35 +42,33 @@ const Toolbar = ({
         </div>
 
         {/* Search area */}
-        <div className="w-full md:flex-1 md:flex md:justify-center">
-          <div className="flex items-center w-full md:max-w-md">
-            <div className="flex-1 relative flex items-center bg-gray-50 rounded border">
-              <Search size={20} className="text-gray-400 absolute left-3 pointer-events-none" aria-hidden="true" />
-              <input
-                type="text"
-                role="searchbox"
-                placeholder="Search nodes, descriptions, methods..."
-                value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
-                className="w-full outline-none text-base bg-transparent pl-10 pr-3 py-2 rounded"
-                aria-label="Search nodes, descriptions, and methods"
-                aria-describedby={searchTerm ? "search-results" : undefined}
-              />
-            </div>
-            {searchTerm && (
-              <button
-                onClick={() => handleSearch('')}
-                className="ml-2 p-1 hover:bg-gray-100 rounded"
-                aria-label="Clear search"
-              >
-                <X size={16} className="text-gray-400" aria-hidden="true" />
-              </button>
-            )}
+        <div className="toolbar-search flex items-center w-full">
+          <div className="flex-1 min-w-[160px] relative flex items-center bg-gray-50 rounded border">
+            <Search size={20} className="text-gray-400 absolute left-3 pointer-events-none" aria-hidden="true" />
+            <input
+              type="text"
+              role="searchbox"
+              placeholder="Search nodes, descriptions, methods..."
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="w-full outline-none text-base bg-transparent pl-10 pr-3 py-2 rounded"
+              aria-label="Search nodes, descriptions, and methods"
+              aria-describedby={searchTerm ? "search-results" : undefined}
+            />
           </div>
+          {searchTerm && (
+            <button
+              onClick={() => handleSearch('')}
+              className="ml-2 p-1 hover:bg-gray-100 rounded flex-shrink-0"
+              aria-label="Clear search"
+            >
+              <X size={16} className="text-gray-400" aria-hidden="true" />
+            </button>
+          )}
         </div>
-        
+
         {/* Button area */}
-        <div className="flex items-center space-x-2 justify-center md:justify-end flex-shrink-0">
+        <div className="toolbar-actions flex flex-wrap items-center gap-2 justify-center md:justify-end">
           <button
             onClick={() => onViewModeChange(viewMode === 'graph' ? 'simple' : 'graph')}
             className="flex items-center px-4 py-2 text-white rounded hover:opacity-90 transition-colors"
@@ -82,7 +80,7 @@ const Toolbar = ({
               {viewMode === 'graph' ? 'Simple View' : 'Map View'}
             </span>
           </button>
-          
+
           <button
             onClick={() => window.location.reload()}
             className="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors text-base"
@@ -90,7 +88,7 @@ const Toolbar = ({
           >
             Reset
           </button>
-          
+
           <button
             onClick={() => onShowKeyboardHelp()}
             className="px-3 py-2 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors text-base"

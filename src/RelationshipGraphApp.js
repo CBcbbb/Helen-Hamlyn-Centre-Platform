@@ -31,10 +31,15 @@ const RelationshipGraphApp = () => {
     setSelectedNode(node);
   }, []);
 
-  // Handle view mode change
+  // Handle view mode change (used by both the Toolbar button and the
+  // Ctrl/Cmd+E shortcut, so both paths announce exactly once per change)
   const handleViewModeChange = useCallback((mode) => {
-    setViewMode(mode);
-  }, []);
+    setViewMode(prev => {
+      if (prev === mode) return prev;
+      setAnnouncements(`Switched to ${mode === 'graph' ? 'interactive map' : 'accessible table'} view`);
+      return mode;
+    });
+  }, [setAnnouncements]);
 
   // Load data (nodes from JSON, links from CSV)
   useEffect(() => {
@@ -100,7 +105,6 @@ const RelationshipGraphApp = () => {
       if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey && (e.code === 'KeyE' || e.key.toLowerCase() === 'e')) {
         e.preventDefault();
         handleViewModeChange(viewMode === 'graph' ? 'simple' : 'graph');
-        setAnnouncements(`Switched to ${viewMode === 'graph' ? 'accessible table' : 'interactive map'} view`);
       }
       
       // Cmd/Ctrl + K: Focus search box

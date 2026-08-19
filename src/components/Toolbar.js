@@ -54,7 +54,7 @@ const Toolbar = ({
                 onChange={(e) => handleSearch(e.target.value)}
                 className="w-full outline-none text-base bg-transparent pl-10 pr-3 py-2 rounded"
                 aria-label="Search nodes, descriptions, and methods"
-                aria-describedby={highlightedNodes.size > 0 ? "search-results" : undefined}
+                aria-describedby={searchTerm ? "search-results" : undefined}
               />
             </div>
             {searchTerm && (
@@ -102,15 +102,17 @@ const Toolbar = ({
         </div>
       </div>
 
-      {highlightedNodes.size > 0 && (
-        <div 
+      {searchTerm && (
+        <div
           id="search-results"
-          className="mt-2 text-center text-base" 
-          style={{ color: ACCENT }}
+          className="mt-2 text-center text-base"
+          style={{ color: highlightedNodes.size > 0 ? ACCENT : undefined }}
           role="status"
           aria-live="polite"
         >
-          Found {highlightedNodes.size} matching node{highlightedNodes.size !== 1 ? 's' : ''}
+          {highlightedNodes.size > 0
+            ? `Found ${highlightedNodes.size} matching node${highlightedNodes.size !== 1 ? 's' : ''}`
+            : 'No matching nodes found'}
         </div>
       )}
     </div>

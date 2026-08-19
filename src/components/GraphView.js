@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as d3 from 'd3';
 import { ZoomIn, ZoomOut, Filter, X } from 'lucide-react';
-import { getNodeColor, getFilteredData, NODE_TYPES, EDGE_STROKE, BORDER_MUTED } from '../utils/graphUtils';
+import { getNodeColor, getFilteredData, NODE_TYPES, EDGE_STROKE } from '../utils/graphUtils';
+import FilterItem from './FilterItem';
+import useDialogFocusTrap from '../hooks/useDialogFocusTrap';
 
 const GraphView = ({ 
   data, 
@@ -18,6 +20,15 @@ const GraphView = ({
   const zoomRef = useRef();
 
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const mobileFilterRef = useRef(null);
+
+  const closeMobileFilter = useCallback(() => setIsMobileFilterOpen(false), []);
+
+  useDialogFocusTrap({
+    isOpen: isMobileFilterOpen,
+    onClose: closeMobileFilter,
+    containerRef: mobileFilterRef,
+  });
 
   // Handle zoom
   const handleZoom = (direction) => {
@@ -264,40 +275,27 @@ const GraphView = ({
         ref={svgRef}
         className="w-full h-full bg-gradient-to-br from-gray-50 to-white"
         role="img"
-        aria-label="Helen Hamlyn Centre for Design Network Visualization - Interactive network showing relationships between entities across people, partners, projects, and methods"
+        aria-label="Helen Hamlyn Centre for Design Network Visualization - Interactive network showing relationships between entities across people, partners, projects, and methods. This map is explored with mouse or touch; for keyboard and screen-reader access to the same data, use Simple View."
       >
       </svg>
- 
+
       {/* Desktop filter panel */}
       <div className="hidden md:block absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 max-w-xs">
         <h2 className="font-semibold text-sm mb-3 flex items-center">
-          <Filter size={16} className="mr-2 text-gray-500" />
+          <Filter size={16} className="mr-2 text-gray-500" aria-hidden="true" />
           Filters
         </h2>
         <div className="space-y-3">
           {filterItems.map(item => (
-            <div 
-              key={item.type} 
-              className="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors"
-              onClick={() => toggleNodeType(item.type)}
-            >
-              <div 
-                className={`w-5 h-5 rounded border-2 flex items-center justify-center mr-3 transition-all`}
-                style={{ 
-                  backgroundColor: visibleTypes[item.type] ? item.color : 'white',
-                  borderColor: visibleTypes[item.type] ? item.color : BORDER_MUTED
-                }}
-              >
-                {visibleTypes[item.type] && (
-                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                )}
-              </div>
-              <span className={`text-sm select-none ${visibleTypes[item.type] ? 'text-gray-900' : 'text-gray-400'}`}>
-                {item.type} ({item.count})
-              </span>
-            </div>
+            <FilterItem
+              key={item.type}
+              type={item.type}
+              color={item.color}
+              count={item.count}
+              checked={visibleTypes[item.type]}
+              onToggle={() => toggleNodeType(item.type)}
+              variant="desktop"
+            />
           ))}
         </div>
         <div className="mt-4 pt-3 border-t border-gray-200">
@@ -316,50 +314,49 @@ const GraphView = ({
         onClick={() => setIsMobileFilterOpen(true)}
         aria-label="Open filters"
       >
-        <Filter size={20} className="text-gray-600" />
+        <Filter size={20} className="text-gray-600" aria-hidden="true" />
       </button>
 
-      {/* Mobile filter full-screen modal */}
+      {/* Mobile filter dialog */}
       {isMobileFilterOpen && (
-        <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
-          <div className="bg-white w-full rounded-t-xl p-4 max-h-96 overflow-y-auto">
+        <div
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeMobileFilter();
+          }}
+        >
+          <div
+            className="bg-white w-full rounded-t-xl p-4 max-h-96 overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-filter-title"
+            ref={mobileFilterRef}
+            tabIndex={-1}
+          >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold text-lg flex items-center">
-                <Filter size={20} className="mr-2 text-gray-500" />
+              <h2 id="mobile-filter-title" className="font-semibold text-lg flex items-center">
+                <Filter size={20} className="mr-2 text-gray-500" aria-hidden="true" />
                 Filters
               </h2>
               <button
-                onClick={() => setIsMobileFilterOpen(false)}
+                onClick={closeMobileFilter}
                 className="p-2 hover:bg-gray-100 rounded-full"
                 aria-label="Close filters"
               >
-                <X size={20} className="text-gray-500" />
+                <X size={20} className="text-gray-500" aria-hidden="true" />
               </button>
             </div>
             <div className="space-y-4">
               {filterItems.map(item => (
-                <div 
-                  key={item.type} 
-                  className="flex items-center cursor-pointer hover:bg-gray-50 p-3 rounded-lg transition-colors"
-                  onClick={() => toggleNodeType(item.type)}
-                >
-                  <div 
-                    className={`w-6 h-6 rounded border-2 flex items-center justify-center mr-4 transition-all`}
-                    style={{ 
-                      backgroundColor: visibleTypes[item.type] ? item.color : 'white',
-                      borderColor: visibleTypes[item.type] ? item.color : BORDER_MUTED
-                    }}
-                  >
-                    {visibleTypes[item.type] && (
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    )}
-                  </div>
-                  <span className={`text-base select-none ${visibleTypes[item.type] ? 'text-gray-900' : 'text-gray-400'}`}>
-                    {item.type} ({item.count})
-                  </span>
-                </div>
+                <FilterItem
+                  key={item.type}
+                  type={item.type}
+                  color={item.color}
+                  count={item.count}
+                  checked={visibleTypes[item.type]}
+                  onToggle={() => toggleNodeType(item.type)}
+                  variant="mobile"
+                />
               ))}
             </div>
           </div>

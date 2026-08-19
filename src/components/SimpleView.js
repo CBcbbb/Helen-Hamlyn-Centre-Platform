@@ -2,192 +2,114 @@ import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import { getNodeColor, getNodeTint, getNodeRing, ACCENT, HIGHLIGHT_BG, NODE_TYPES } from '../utils/graphUtils';
 
+const truncate = (text, length) => {
+  const value = Array.isArray(text) ? text[0] : text;
+  if (!value) return null;
+  return value.length > length ? `${value.substring(0, length)}...` : value;
+};
+
+// Per-type supplementary content shown under the entity name. Kept local to
+// SimpleView (not graphUtils) since it's purely presentational and specific
+// to this list layout.
+const EXTRA_CONTENT_BY_TYPE = {
+  People: (node) => (
+    <>
+      {node.connections && (
+        <div className="text-sm mt-1 line-clamp-2" style={{ color: getNodeColor('People') }}>
+          {node.connections}
+        </div>
+      )}
+      <div className="text-sm text-gray-400 mt-1 truncate">{truncate(node.bio, 80)}</div>
+    </>
+  ),
+  Partners: (node) => (
+    <>
+      {node.bio && (
+        <div className="text-sm text-gray-400 mt-1 truncate">{truncate(node.bio, 100)}</div>
+      )}
+      {node.website && (
+        <div className="text-sm mt-1 flex items-center" style={{ color: getNodeColor('Partners') }}>
+          <ExternalLink size={10} className="mr-1" aria-hidden="true" />
+          Website
+        </div>
+      )}
+    </>
+  ),
+  Projects: (node) => (
+    node.description && (
+      <div className="text-sm text-gray-400 mt-1 line-clamp-2">{truncate(node.description, 100)}</div>
+    )
+  ),
+  Methods: (node) => (
+    <>
+      {node.category && (
+        <div
+          className="text-sm text-white mt-1 inline-block px-2 py-1 rounded"
+          style={{ backgroundColor: getNodeColor('Methods') }}
+        >
+          {node.category}
+        </div>
+      )}
+      {node.description && (
+        <div className="text-sm text-gray-400 mt-2 line-clamp-2">{truncate(node.description, 100)}</div>
+      )}
+    </>
+  ),
+};
+
 const SimpleView = ({ data, visibleTypes, highlightedNodes, onNodeSelection }) => {
   if (!data || !data.nodes) return null;
 
   return (
-    <div className="p-6 overflow-auto h-full" role="main" aria-label="Accessible table view of network data">
+    <section className="p-6 overflow-auto h-full" aria-labelledby="simpleview-heading">
       <div className="bg-white rounded-lg shadow border">
-        {/* Table description for screen reader users */}
         <div className="sr-only">
-          <h2>Helen Hamlyn Centre for Design - Entities Table</h2>
+          <h2 id="simpleview-heading">Helen Hamlyn Centre for Design - Entities List</h2>
           <p>
-            Table showing {data.nodes.length} entities organized by type: People, Partners, Projects, and Methods.
+            List showing {data.nodes.length} entities organized by type: People, Partners, Projects, and Methods.
             Each entity can be selected to view detailed information.
           </p>
         </div>
-        
-        <div 
-          className={`
-            grid gap-4 p-4 bg-gray-50 font-semibold text-base text-gray-700 rounded-t-lg border-b
-            
-            grid-cols-1
-            
-            sm:grid-cols-2
-            
-            lg:grid-cols-4
-          `}
-          role="row"
-        >
-          {NODE_TYPES.map(type => (
-            <div key={type} className="flex items-center" role="columnheader">
-              <div className="w-4 h-4 rounded mr-2" style={{backgroundColor: getNodeColor(type)}} aria-hidden="true"></div>
-              {type} ({data.nodes.filter(n => n.type === type && visibleTypes[type]).length})
-            </div>
-          ))}
-        </div>
-        
-        <div 
-          className={`
-            grid gap-4 p-4
-            
-            grid-cols-1
-            
-            sm:grid-cols-2
-            
-            lg:grid-cols-4
-          `}
-          role="grid"
-          aria-label="Entities organized by type"
-        >
-          <div role="gridcell" aria-label="People entities">
-            <h3 className="sr-only">People</h3>
-            <div className="space-y-3">
-            {data.nodes.filter(n => n.type === 'People' && visibleTypes.People).map((node, index) => (
-              <button
-                key={node.id}
-                onClick={() => onNodeSelection(node)}
-                className={`w-full text-left p-3 rounded border transition-all hover:shadow-md focus-ring-brand ${
-                  highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
-                }`}
-                style={{
-                  backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('People'),
-                  borderColor: highlightedNodes.has(node.id) ? ACCENT : getNodeRing('People')
-                }}
-                aria-label={`View details for ${node.name}, person ${index + 1} of ${data.nodes.filter(n => n.type === 'People' && visibleTypes.People).length}`}
-                {...(node.connections && { 'aria-describedby': `node-${node.id}-summary` })}
-              >
-                <div className="font-medium text-base text-gray-900">{node.name}</div>
-                {node.connections && (
-                  <div id={`node-${node.id}-summary`} className="text-sm mt-1 line-clamp-2" style={{ color: getNodeColor('People') }}>{node.connections}</div>
-                )}
-                <div className="text-sm text-gray-400 mt-1 truncate">
-                  {Array.isArray(node.bio) 
-                    ? node.bio[0]?.substring(0, 80) + '...'
-                    : node.bio?.substring(0, 80) + '...'
-                  }
-                </div>
-              </button>
-            ))}
-            </div>
-          </div>
 
-          <div role="gridcell" aria-label="Partners entities">
-            <h3 className="sr-only">Partners</h3>
-            <div className="space-y-3">
-            {data.nodes.filter(n => n.type === 'Partners' && visibleTypes.Partners).map((node, index) => (
-              <button
-                key={node.id}
-                onClick={() => onNodeSelection(node)}
-                className={`w-full text-left p-3 rounded border transition-all hover:shadow-md focus-ring-brand ${
-                  highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
-                }`}
-                style={{
-                  backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Partners'),
-                  borderColor: highlightedNodes.has(node.id) ? ACCENT : getNodeRing('Partners')
-                }}
-                aria-label={`View details for ${node.name}, partner ${index + 1} of ${data.nodes.filter(n => n.type === 'Partners' && visibleTypes.Partners).length}`}
-                {...(node.bio && { 'aria-describedby': `node-${node.id}-summary` })}
-              >
-                <div className="font-medium text-base text-gray-900">{node.name}</div>
-                {node.bio && (
-                  <div id={`node-${node.id}-summary`} className="text-sm text-gray-400 mt-1 truncate">
-                    {Array.isArray(node.bio) 
-                      ? node.bio[0]?.substring(0, 100) + '...'
-                      : node.bio?.substring(0, 100) + '...'
-                    }
-                  </div>
-                )}
-                {node.website && (
-                  <div className="text-sm mt-1 flex items-center" style={{ color: getNodeColor('Partners') }}>
-                    <ExternalLink size={10} className="mr-1" aria-hidden="true" />
-                    Website
-                  </div>
-                )}
-              </button>
-            ))}
-            </div>
-          </div>
+        <div className="grid gap-4 p-4 md:p-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {NODE_TYPES.map(type => {
+            const nodes = data.nodes.filter(n => n.type === type && visibleTypes[type]);
+            const renderExtra = EXTRA_CONTENT_BY_TYPE[type];
 
-          <div role="gridcell" aria-label="Projects entities">
-            <h3 className="sr-only">Projects</h3>
-            <div className="space-y-3">
-            {data.nodes.filter(n => n.type === 'Projects' && visibleTypes.Projects).map((node, index) => (
-              <button
-                key={node.id}
-                onClick={() => onNodeSelection(node)}
-                className={`w-full text-left p-3 rounded border transition-all hover:shadow-md focus-ring-brand ${
-                  highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
-                }`}
-                style={{
-                  backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Projects'),
-                  borderColor: highlightedNodes.has(node.id) ? ACCENT : getNodeRing('Projects')
-                }}
-                aria-label={`View details for ${node.name}, project ${index + 1} of ${data.nodes.filter(n => n.type === 'Projects' && visibleTypes.Projects).length}`}
-                {...(node.description && { 'aria-describedby': `node-${node.id}-summary` })}
-              >
-                <div className="font-medium text-base text-gray-900">{node.name}</div>
-                {node.description && (
-                  <div id={`node-${node.id}-summary`} className="text-sm text-gray-400 mt-1 line-clamp-2">
-                    {Array.isArray(node.description) 
-                      ? node.description[0]?.substring(0, 100) + '...'
-                      : node.description?.substring(0, 100) + '...'
-                    }
-                  </div>
-                )}
-              </button>
-            ))}
-            </div>
-          </div>
-
-          <div role="gridcell" aria-label="Methods entities">
-            <h3 className="sr-only">Methods</h3>
-            <div className="space-y-3">
-            {data.nodes.filter(n => n.type === 'Methods' && visibleTypes.Methods).map((node, index) => (
-              <button
-                key={node.id}
-                onClick={() => onNodeSelection(node)}
-                className={`w-full text-left p-3 rounded border transition-all hover:shadow-md focus-ring-brand ${
-                  highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
-                }`}
-                style={{
-                  backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint('Methods'),
-                  borderColor: highlightedNodes.has(node.id) ? ACCENT : getNodeRing('Methods')
-                }}
-                aria-label={`View details for ${node.name}, method ${index + 1} of ${data.nodes.filter(n => n.type === 'Methods' && visibleTypes.Methods).length}`}
-                {...(node.description && { 'aria-describedby': `node-${node.id}-summary` })}
-              >
-                <div className="font-medium text-base text-gray-900">{node.name}</div>
-                {node.category && (
-                  <div className="text-sm text-white mt-1 inline-block px-2 py-1 rounded" style={{ backgroundColor: getNodeColor('Methods') }}>
-                    {node.category}
-                  </div>
-                )}
-                {node.description && (
-                  <div id={`node-${node.id}-summary`} className="text-sm text-gray-400 mt-2 line-clamp-2">
-                    {Array.isArray(node.description) 
-                      ? node.description[0]?.substring(0, 100) + '...'
-                      : node.description?.substring(0, 100) + '...'
-                    }
-                  </div>
-                )}
-              </button>
-            ))}
-            </div>
-          </div>
+            return (
+              <section key={type} aria-labelledby={`simpleview-${type}-heading`}>
+                <h3 id={`simpleview-${type}-heading`} className="font-semibold text-base text-gray-700 mb-3 flex items-center">
+                  <span className="w-4 h-4 rounded mr-2" style={{ backgroundColor: getNodeColor(type) }} aria-hidden="true"></span>
+                  {type} ({nodes.length})
+                </h3>
+                <ul className="space-y-3 list-none p-0 m-0">
+                  {nodes.map((node, index) => (
+                    <li key={node.id}>
+                      <button
+                        onClick={() => onNodeSelection(node)}
+                        className={`w-full text-left p-3 rounded border transition-all hover:shadow-md focus-ring-brand ${
+                          highlightedNodes.has(node.id) ? 'shadow-md' : 'hover:bg-gray-50'
+                        }`}
+                        style={{
+                          backgroundColor: highlightedNodes.has(node.id) ? HIGHLIGHT_BG : getNodeTint(type),
+                          borderColor: highlightedNodes.has(node.id) ? ACCENT : getNodeRing(type)
+                        }}
+                      >
+                        <div className="font-medium text-base text-gray-900">
+                          {node.name}
+                          <span className="sr-only"> ({index + 1} of {nodes.length})</span>
+                        </div>
+                        {renderExtra && renderExtra(node)}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            );
+          })}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

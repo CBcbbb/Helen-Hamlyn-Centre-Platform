@@ -34,7 +34,7 @@ const KeyboardHelp = ({ show, onClose }) => {
             className="p-1 hover:bg-gray-100 rounded"
             aria-label="Close help"
           >
-            <X size={20} className="text-gray-500" />
+            <X size={20} className="text-gray-500" aria-hidden="true" />
           </button>
         </div>
         
@@ -51,7 +51,10 @@ const KeyboardHelp = ({ show, onClose }) => {
           ))}
         </div>
         
-        <div className="mt-6 pt-4 border-t border-gray-200">
+        <div className="mt-6 pt-4 border-t border-gray-200 space-y-2">
+          <p className="text-xs text-gray-500">
+            Map View's nodes are mouse/touch-driven. For a fully keyboard-navigable list of the same data, switch to Simple View ({cmdKey} + E).
+          </p>
           <p className="text-xs text-gray-500 text-center">
             Press Escape or click outside to close
           </p>

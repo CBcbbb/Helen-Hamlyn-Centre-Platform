@@ -63,6 +63,13 @@
   --color-skip-link-bg: #000;
   --color-skip-link-text: #fff;
 
+  /* Unified keyboard-focus indicator: an accent outline plus a light halo
+     underneath it, so the cue stays visible against white, light-gray,
+     saturated entity-tint, and dark backgrounds alike (two contrast cues
+     instead of relying on one color against every background). */
+  --color-focus-ring: var(--color-accent);
+  --color-focus-halo: #ffffff;
+
   /* prefers-contrast: high overrides */
   --color-contrast-bg: #ffffff;
   --color-contrast-bg-alt: #f3f4f6;

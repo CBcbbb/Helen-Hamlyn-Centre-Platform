@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom brand focus ring */
-.focus-ring-brand:focus {
-  box-shadow: 0 0 0 2px var(--color-accent) !important;
+/* Custom brand focus ring — double contrast cue (light halo + solid outline)
+   so it stays visible on white, light-gray, entity-tint, and dark
+   backgrounds. Uses :focus-visible so it only shows for keyboard focus,
+   matching the other focus rules below. */
+.focus-ring-brand:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-focus-halo), 0 0 0 4px var(--color-focus-ring) !important;
   outline: none !important;
 }
 
@@ -74,21 +77,32 @@ svg g.nodes g {
 }
 
 /* 焦点指示器 */
-.focus\:ring-2:focus {
-  box-shadow: 0 0 0 2px var(--color-accent);
+.focus\:ring-2:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-focus-halo), 0 0 0 4px var(--color-focus-ring);
 }
 
-.focus\:ring-blue-500:focus {
-  --tw-ring-color: var(--color-accent);
+.focus\:ring-blue-500:focus-visible {
+  --tw-ring-color: var(--color-focus-ring);
 }
 
-/* 确保焦点可见 */
+/* 确保焦点可见 — double contrast cue: a light halo plus a solid outline,
+   so the indicator reads on white, light-gray, entity-tint, and dark
+   backgrounds alike (double-cue principle, not a specific palette). */
 button:focus-visible,
 input:focus-visible,
 [tabindex]:focus-visible,
 a:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--color-focus-halo);
+}
+
+/* The visually-hidden native checkbox in FilterItem still needs a visible
+   focus indicator; show it on the decorative box rendered right after it. */
+.filter-checkbox-input:focus-visible + span {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--color-focus-halo);
 }
 
 /* 跳过链接 */

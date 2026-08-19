@@ -174,7 +174,7 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
       `}
       style={{ width: window.innerWidth > 768 ? `${width}%` : '100%' }}
       role="complementary"
-      aria-labelledby="details-title"
+      aria-labelledby="details-title-mobile details-title"
       ref={detailsRef}
       tabIndex={-1}
     >
@@ -187,10 +187,10 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
         >
           <span className="text-lg">←</span>
         </button>
-        <h2 className="flex-1 text-center font-bold text-lg">{selectedNode.name}</h2>
+        <h2 id="details-title-mobile" className="flex-1 text-center font-bold text-lg">{selectedNode.name}</h2>
         <div className="w-10"></div>
       </div>
-      
+
       {/* Desktop panel header */}
       <div className="hidden md:flex items-center justify-between p-6 border-b border-gray-200 bg-gray-50">
         <div className="flex items-center">
@@ -213,10 +213,10 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
           className="p-2 hover:bg-gray-200 rounded-full transition-colors"
           aria-label="Close details panel"
         >
-          <X size={20} className="text-gray-500" />
+          <X size={20} className="text-gray-500" aria-hidden="true" />
         </button>
       </div>
-      
+
       {/* Scrollable content area */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-6 space-y-6">

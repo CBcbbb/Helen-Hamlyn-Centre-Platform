@@ -1,90 +1,38 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X } from 'lucide-react';
 import { ACCENT } from '../utils/graphUtils';
+import useDialogFocusTrap from '../hooks/useDialogFocusTrap';
 
 const Modal = ({ showModal, setShowModal }) => {
   const [width, setWidth] = useState(50);
   const isDragging = useRef(false);
   const modalRef = useRef(null);
-  const previousFocusRef = useRef(null);
 
-  // Focus management
+  const handleClose = useCallback(() => setShowModal(null), [setShowModal]);
+
+  useDialogFocusTrap({ isOpen: !!showModal, onClose: handleClose, containerRef: modalRef });
+
+  // Keyboard resize - WCAG 2.2 AA success criterion 2.5.7 (Dragging Movements)
+  // requires a non-drag alternative for this custom resize control.
   useEffect(() => {
-    if (showModal) {
-      // Save current focus
-      previousFocusRef.current = document.activeElement;
-      
-      // Set focus to modal
-      setTimeout(() => {
-        modalRef.current?.focus();
-      }, 100);
-      
-      // Escape key handler
-      const handleEscape = (e) => {
-        if (e.key === 'Escape') {
-          setShowModal(null);
+    if (!showModal) return undefined;
+
+    const handleKeyResize = (e) => {
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          setWidth(w => Math.max(20, w - 5));
         }
-      };
-      
-      // Keyboard resize - WCAG 2.2 AA compliant (2.5.7)
-      const handleKeyResize = (e) => {
-        if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
-          if (e.key === 'ArrowLeft') {
-            e.preventDefault();
-            const newWidth = Math.max(20, width - 5);
-            setWidth(newWidth);
-          }
-          if (e.key === 'ArrowRight') {
-            e.preventDefault();
-            const newWidth = Math.min(80, width + 5);
-            setWidth(newWidth);
-          }
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          setWidth(w => Math.min(80, w + 5));
         }
-      };
-      
-      // Focus trap
-      const handleTabKey = (e) => {
-        if (e.key === 'Tab') {
-          const focusableElements = modalRef.current?.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-          );
-          
-          if (focusableElements && focusableElements.length > 0) {
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-            
-            if (e.shiftKey) {
-              // Shift + Tab
-              if (document.activeElement === firstElement) {
-                e.preventDefault();
-                lastElement.focus();
-              }
-            } else {
-              // Tab
-              if (document.activeElement === lastElement) {
-                e.preventDefault();
-                firstElement.focus();
-              }
-            }
-          }
-        }
-      };
-      
-      document.addEventListener('keydown', handleEscape);
-      document.addEventListener('keydown', handleKeyResize);
-      document.addEventListener('keydown', handleTabKey);
-      
-      return () => {
-        document.removeEventListener('keydown', handleEscape);
-        document.removeEventListener('keydown', handleKeyResize);
-        document.removeEventListener('keydown', handleTabKey);
-        // Restore focus
-        if (previousFocusRef.current) {
-          previousFocusRef.current.focus();
-        }
-      };
-    }
-  }, [showModal, setShowModal, width]);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyResize);
+    return () => document.removeEventListener('keydown', handleKeyResize);
+  }, [showModal]);
 
   if (!showModal) return null;
 
@@ -153,10 +101,10 @@ const Modal = ({ showModal, setShowModal }) => {
           aria-label="Close dialog"
           title="Close"
         >
-          <X size={20} className="text-gray-500" />
+          <X size={20} className="text-gray-500" aria-hidden="true" />
         </button>
       </div>
-      
+
       {/* Scrollable content area */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 md:p-6">

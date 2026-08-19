@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { X } from 'lucide-react';
+import useDialogFocusTrap from '../hooks/useDialogFocusTrap';
 
 const KeyboardHelp = ({ show, onClose }) => {
+  const dialogRef = useRef(null);
+
+  useDialogFocusTrap({ isOpen: show, onClose, containerRef: dialogRef });
+
+  const handleBackdropClick = useCallback(
+    (e) => {
+      if (e.target === e.currentTarget) onClose();
+    },
+    [onClose]
+  );
+
   if (!show) return null;
 
   const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
@@ -18,12 +30,17 @@ const KeyboardHelp = ({ show, onClose }) => {
   ];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div 
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      onClick={handleBackdropClick}
+    >
+      <div
         className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6"
         role="dialog"
         aria-labelledby="help-title"
         aria-modal="true"
+        ref={dialogRef}
+        tabIndex={-1}
       >
         <div className="flex items-center justify-between mb-4">
           <h2 id="help-title" className="text-xl font-bold text-gray-900">

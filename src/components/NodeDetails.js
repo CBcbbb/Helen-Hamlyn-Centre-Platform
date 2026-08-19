@@ -1,12 +1,33 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, ExternalLink } from 'lucide-react';
 import { getNodeColor, getNodeTint, ACCENT, LINK_COLOR } from '../utils/graphUtils';
+import useDialogFocusTrap from '../hooks/useDialogFocusTrap';
+import useMediaQuery, { WIDE_LAYOUT_QUERY } from '../hooks/useMediaQuery';
 
 const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
   const [width, setWidth] = useState(50);
   const isDragging = useRef(false);
   const detailsRef = useRef(null);
-  const previousFocusRef = useRef(null);
+
+  // At/above this breakpoint the panel is a persistent, non-modal side
+  // panel (role="complementary"); below it, it's a full-screen modal
+  // dialog (role="dialog", aria-modal="true"). Matches the md: classes
+  // used for the panel's visual layout below.
+  const isWideLayout = useMediaQuery(WIDE_LAYOUT_QUERY);
+
+  const closeDetails = useCallback(() => onNodeSelection(null), [onNodeSelection]);
+
+  // Shared focus management: initial focus, Escape-to-close, and focus
+  // restoration to whatever triggered the panel apply in both modes. The
+  // Tab trap only applies in mobile/modal mode — the desktop complementary
+  // panel is explicitly non-modal, so focus must be free to move to the
+  // rest of the page.
+  useDialogFocusTrap({
+    isOpen: !!selectedNode,
+    onClose: closeDetails,
+    containerRef: detailsRef,
+    modal: !isWideLayout,
+  });
 
   // Convert URLs in text to clickable links
   const renderTextWithLinks = (text) => {
@@ -86,53 +107,29 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
     return renderTextWithLinks(text);
   };
 
-  // Focus management
+  // Keyboard resize: provides a keyboard alternative to the drag resize
+  // interaction. Desktop-only — mobile is a full-screen dialog with no
+  // resizable width (the resizable-panel CSS only applies at the same
+  // wide-layout breakpoint).
   useEffect(() => {
-    if (selectedNode) {
-      // Save current focus
-      previousFocusRef.current = document.activeElement;
-      
-      // Set focus to details panel
-      setTimeout(() => {
-        detailsRef.current?.focus();
-      }, 100);
-      
-      // Escape key handler
-      const handleEscape = (e) => {
-        if (e.key === 'Escape') {
-          onNodeSelection(null);
+    if (!selectedNode || !isWideLayout) return undefined;
+
+    const handleKeyResize = (e) => {
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          setWidth(w => Math.min(80, w + 5));
         }
-      };
-      
-      // Keyboard resize: provides a keyboard alternative to the drag resize interaction.
-      const handleKeyResize = (e) => {
-        if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
-          if (e.key === 'ArrowLeft') {
-            e.preventDefault();
-            const newWidth = Math.min(80, width + 5);
-            setWidth(newWidth);
-          }
-          if (e.key === 'ArrowRight') {
-            e.preventDefault();
-            const newWidth = Math.max(20, width - 5);
-            setWidth(newWidth);
-          }
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          setWidth(w => Math.max(20, w - 5));
         }
-      };
-      
-      document.addEventListener('keydown', handleEscape);
-      document.addEventListener('keydown', handleKeyResize);
-      
-      return () => {
-        document.removeEventListener('keydown', handleEscape);
-        document.removeEventListener('keydown', handleKeyResize);
-        // Restore focus
-        if (previousFocusRef.current) {
-          previousFocusRef.current.focus();
-        }
-      };
-    }
-  }, [selectedNode, onNodeSelection, width]);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyResize);
+    return () => document.removeEventListener('keydown', handleKeyResize);
+  }, [selectedNode, isWideLayout]);
 
   if (!selectedNode || !data || !data.links) return null;
 
@@ -173,49 +170,52 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
         inset-0 md:inset-auto
       `}
       style={{ '--panel-width': `${width}%` }}
-      role="complementary"
-      aria-labelledby="details-title-mobile details-title"
+      role={isWideLayout ? 'complementary' : 'dialog'}
+      aria-modal={isWideLayout ? undefined : 'true'}
+      aria-labelledby="details-title"
       ref={detailsRef}
       tabIndex={-1}
     >
-      {/* Mobile top navigation bar */}
-      <div className="flex items-center p-4 border-b bg-gray-50 md:hidden">
-        <button
-          onClick={() => onNodeSelection(null)}
-          className="p-2 hover:bg-gray-200 rounded transition-colors"
-          aria-label="Close details and return to main view"
-        >
-          <span className="text-lg">←</span>
-        </button>
-        <h2 id="details-title-mobile" className="flex-1 text-center font-bold text-lg">{selectedNode.name}</h2>
-        <div className="w-10"></div>
-      </div>
-
-      {/* Desktop panel header */}
-      <div className="hidden md:flex items-center justify-between p-6 border-b border-gray-200 bg-gray-50">
-        <div className="flex items-center">
-          <div 
-            className="w-6 h-6 rounded-full mr-3 flex-shrink-0"
-            style={{ backgroundColor: getNodeColor(selectedNode.type) }}
-          ></div>
-          <div>
-            <h2 id="details-title" className="text-2xl font-bold text-gray-900">{selectedNode.name}</h2>
-            <div className="flex items-center gap-4">
-              <p className="text-base text-gray-500 font-medium">{selectedNode.type}</p>
-              <p className="text-sm text-gray-600">
-                Use Ctrl/Cmd + ← → to resize panel
-              </p>
+      {isWideLayout ? (
+        /* Desktop panel header — non-modal, persistent side panel */
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gray-50">
+          <div className="flex items-center">
+            <div
+              className="w-6 h-6 rounded-full mr-3 flex-shrink-0"
+              style={{ backgroundColor: getNodeColor(selectedNode.type) }}
+            ></div>
+            <div>
+              <h2 id="details-title" className="text-2xl font-bold text-gray-900">{selectedNode.name}</h2>
+              <div className="flex items-center gap-4">
+                <p className="text-base text-gray-500 font-medium">{selectedNode.type}</p>
+                <p className="text-sm text-gray-600">
+                  Use Ctrl/Cmd + ← → to resize panel
+                </p>
+              </div>
             </div>
           </div>
+          <button
+            onClick={() => onNodeSelection(null)}
+            className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+            aria-label="Close details panel"
+          >
+            <X size={20} className="text-gray-500" aria-hidden="true" />
+          </button>
         </div>
-        <button
-          onClick={() => onNodeSelection(null)}
-          className="p-2 hover:bg-gray-200 rounded-full transition-colors"
-          aria-label="Close details panel"
-        >
-          <X size={20} className="text-gray-500" aria-hidden="true" />
-        </button>
-      </div>
+      ) : (
+        /* Mobile top navigation bar — full-screen modal dialog */
+        <div className="flex items-center p-4 border-b bg-gray-50">
+          <button
+            onClick={() => onNodeSelection(null)}
+            className="p-2 hover:bg-gray-200 rounded transition-colors"
+            aria-label="Close details and return to main view"
+          >
+            <span className="text-lg" aria-hidden="true">←</span>
+          </button>
+          <h2 id="details-title" className="flex-1 text-center font-bold text-lg">{selectedNode.name}</h2>
+          <div className="w-10"></div>
+        </div>
+      )}
 
       {/* Scrollable content area */}
       <div className="flex-1 overflow-y-auto">
@@ -649,14 +649,16 @@ const NodeDetails = ({ selectedNode, onNodeSelection, data }) => {
         </div>
       </div>
       
-      {/* Left drag handle */}
-      <div 
-        className="absolute left-0 top-0 w-1 h-full bg-gray-300 cursor-col-resize transition-colors"
-        onMouseDown={handleMouseDown}
-        onMouseEnter={(e) => e.target.style.backgroundColor = ACCENT}
-        onMouseLeave={(e) => e.target.style.backgroundColor = ''}
-        title="Drag to resize"
-      />
+      {/* Left drag handle — desktop resize only */}
+      {isWideLayout && (
+        <div
+          className="absolute left-0 top-0 w-1 h-full bg-gray-300 cursor-col-resize transition-colors"
+          onMouseDown={handleMouseDown}
+          onMouseEnter={(e) => e.target.style.backgroundColor = ACCENT}
+          onMouseLeave={(e) => e.target.style.backgroundColor = ''}
+          title="Drag to resize"
+        />
+      )}
     </div>
   );
 };

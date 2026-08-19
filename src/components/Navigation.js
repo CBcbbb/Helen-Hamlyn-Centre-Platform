@@ -1,33 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Info, HelpCircle, Accessibility, Languages, Menu  } from 'lucide-react';
 import { NODE_TYPES } from '../utils/graphUtils';
 import useDialogFocusTrap from '../hooks/useDialogFocusTrap';
-
-// Below this width the sidebar is rendered as a full-width modal drawer
-// (matches the md breakpoint used for its layout classes below); at or
-// above it, it's a persistent, non-modal part of the page.
-const MOBILE_BREAKPOINT_QUERY = '(max-width: 767px)';
+import useMediaQuery, { WIDE_LAYOUT_QUERY } from '../hooks/useMediaQuery';
 
 const Navigation = ({ isNavExpanded, setIsNavExpanded, setShowModal, data }) => {
-  const [isMobileViewport, setIsMobileViewport] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches
-  );
+  // Below the wide-layout breakpoint the sidebar is rendered as a
+  // full-width modal drawer (matches the md breakpoint used for its layout
+  // classes below); at or above it, it's a persistent, non-modal part of
+  // the page.
+  const isMobileViewport = !useMediaQuery(WIDE_LAYOUT_QUERY);
   const navRef = useRef(null);
-
-  useEffect(() => {
-    const mql = window.matchMedia(MOBILE_BREAKPOINT_QUERY);
-    // Some environments (e.g. devtools viewport overrides) resize the
-    // layout without firing the MediaQueryList's own "change" event, so
-    // re-check matches on a plain window resize too rather than trusting
-    // "change" alone.
-    const update = () => setIsMobileViewport(mql.matches);
-    mql.addEventListener('change', update);
-    window.addEventListener('resize', update);
-    return () => {
-      mql.removeEventListener('change', update);
-      window.removeEventListener('resize', update);
-    };
-  }, []);
 
   const closeNav = useCallback(() => setIsNavExpanded(false), [setIsNavExpanded]);
 

@@ -4,7 +4,13 @@ import { useEffect } from 'react';
 // open, trap Tab/Shift+Tab inside it, and close on Escape. Used by any
 // modal-like overlay (Modal.js, GraphView's mobile filter panel) so there is
 // one tested implementation instead of several hand-rolled copies.
-const useDialogFocusTrap = ({ isOpen, onClose, containerRef }) => {
+//
+// Pass `modal: false` for a non-modal use (e.g. NodeDetails' desktop
+// complementary panel): initial focus, Escape-to-close, and focus
+// restoration still apply, but Tab/Shift+Tab are left alone so focus can
+// move freely to the rest of the page, matching non-modal semantics
+// (no aria-modal, background stays operable).
+const useDialogFocusTrap = ({ isOpen, onClose, containerRef, modal = true }) => {
   useEffect(() => {
     if (!isOpen) return undefined;
 
@@ -44,17 +50,21 @@ const useDialogFocusTrap = ({ isOpen, onClose, containerRef }) => {
     };
 
     document.addEventListener('keydown', handleEscape);
-    document.addEventListener('keydown', handleTabKey);
+    if (modal) {
+      document.addEventListener('keydown', handleTabKey);
+    }
 
     return () => {
       clearTimeout(focusTimeout);
       document.removeEventListener('keydown', handleEscape);
-      document.removeEventListener('keydown', handleTabKey);
+      if (modal) {
+        document.removeEventListener('keydown', handleTabKey);
+      }
       if (previouslyFocused instanceof HTMLElement) {
         previouslyFocused.focus();
       }
     };
-  }, [isOpen, onClose, containerRef]);
+  }, [isOpen, onClose, containerRef, modal]);
 };
 
 export default useDialogFocusTrap;

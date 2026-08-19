@@ -4,13 +4,14 @@ import { ZoomIn, ZoomOut, Filter, X } from 'lucide-react';
 import { getNodeColor, getFilteredData, NODE_TYPES, EDGE_STROKE } from '../utils/graphUtils';
 import FilterItem from './FilterItem';
 import useDialogFocusTrap from '../hooks/useDialogFocusTrap';
+import useMediaQuery, { WIDE_LAYOUT_QUERY } from '../hooks/useMediaQuery';
 
-const GraphView = ({ 
-  data, 
-  visibleTypes, 
-  toggleNodeType, 
-  highlightedNodes, 
-  selectedNode, 
+const GraphView = ({
+  data,
+  visibleTypes,
+  toggleNodeType,
+  highlightedNodes,
+  selectedNode,
   onNodeSelection,
   zoomLevel,
   setZoomLevel
@@ -19,13 +20,30 @@ const GraphView = ({
   const simulationRef = useRef();
   const zoomRef = useRef();
 
+  // At/above this breakpoint the persistent desktop filter panel is shown
+  // instead of the mobile filter dialog (matches the md: classes below).
+  const isWideLayout = useMediaQuery(WIDE_LAYOUT_QUERY);
+
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const mobileFilterRef = useRef(null);
 
   const closeMobileFilter = useCallback(() => setIsMobileFilterOpen(false), []);
 
+  // If the viewport widens into the persistent-filter-panel layout while the
+  // mobile dialog is open, close it — otherwise its overlay would only be
+  // hidden via CSS (md:hidden) while its state (and any focus trap) kept
+  // running as if it were still visible.
+  useEffect(() => {
+    if (isWideLayout && isMobileFilterOpen) {
+      setIsMobileFilterOpen(false);
+    }
+  }, [isWideLayout, isMobileFilterOpen]);
+
+  // Only run the focus trap while the dialog is actually visible: mobile
+  // mode AND open. In wide mode the overlay is never rendered, so there is
+  // nothing to trap focus inside of.
   useDialogFocusTrap({
-    isOpen: isMobileFilterOpen,
+    isOpen: !isWideLayout && isMobileFilterOpen,
     onClose: closeMobileFilter,
     containerRef: mobileFilterRef,
   });
@@ -318,7 +336,7 @@ const GraphView = ({
       </button>
 
       {/* Mobile filter dialog */}
-      {isMobileFilterOpen && (
+      {!isWideLayout && isMobileFilterOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end"
           onClick={(e) => {
@@ -368,15 +386,17 @@ const GraphView = ({
           onClick={() => handleZoom('in')}
           className="p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow border"
           title="Zoom In"
+          aria-label="Zoom in"
         >
-          <ZoomIn size={20} className="text-gray-600" />
+          <ZoomIn size={20} className="text-gray-600" aria-hidden="true" />
         </button>
         <button
           onClick={() => handleZoom('out')}
           className="p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow border"
           title="Zoom Out"
+          aria-label="Zoom out"
         >
-          <ZoomOut size={20} className="text-gray-600" />
+          <ZoomOut size={20} className="text-gray-600" aria-hidden="true" />
         </button>
         <div className="text-xs text-center text-gray-500 mt-1 bg-white rounded px-2 py-1 shadow">
           {Math.round(zoomLevel * 100)}%

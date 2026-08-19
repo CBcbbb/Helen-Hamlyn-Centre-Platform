@@ -16,13 +16,27 @@
   white-space: pre-line;
 }
 
+/* The Toolbar's single-row composition needs to know how much space is
+   actually available to the toolbar itself — not the viewport — because
+   the Navigation sidebar (persistent, up to 256px wide) eats into that
+   space, and split-screen/embedded layouts can be narrower than the full
+   viewport too. A `@media` width query can't see any of that; it only ever
+   measures the viewport. `main` (Toolbar's containing block, alongside the
+   Navigation sidebar in the flex layout) is set as a container so the
+   Toolbar can query *its* content-box width instead. */
+main {
+  container-type: inline-size;
+  container-name: app-main;
+}
+
 /* Toolbar responsive composition — grid areas instead of a flex row that
    collapses at a single breakpoint. Constrained widths stack brand/search/
    actions vertically; md gives search its own full-width row so it can't be
-   squeezed into an icon; lg is the only width where everything shares one
-   row, and search gets a bounded track so it neither shrinks unusably nor
-   grows unbounded. Breakpoints exist because the composition genuinely
-   changes at each one, not to match named device sizes. */
+   squeezed into an icon; the container-query tier above is the only width
+   where everything shares one row, and search gets a bounded track so it
+   neither shrinks unusably nor grows unbounded. Breakpoints exist because
+   the composition genuinely changes at each one, not to match named device
+   sizes. */
 .toolbar-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -48,13 +62,34 @@
 }
 
 /* Single-row composition needs room for the full title next to a usable
-   search field and the action buttons — that doesn't fit until well past
-   the md/lg breakpoints with this content, so it's deferred to a custom
-   1280px point rather than Tailwind's lg (1024px). */
-@media (min-width: 1280px) {
+   search field and the action buttons. That's a property of the space
+   actually available to `main` (the container above), not of the viewport,
+   so this is a container query keyed to `app-main`'s own inline size rather
+   than a `@media (min-width: …)` breakpoint. 960px is the container width
+   (not viewport width) verified to fit brand + a usable search field +
+   actions without compressing anything, including with the Navigation
+   sidebar expanded (~256px) subtracted from a 1280px viewport. */
+@container app-main (min-width: 960px) {
   .toolbar-grid {
-    grid-template-columns: minmax(520px, 1fr) minmax(240px, 520px) minmax(300px, auto);
+    grid-template-columns: minmax(320px, 1fr) minmax(240px, 520px) minmax(260px, auto);
     grid-template-areas: "brand search actions";
+  }
+}
+
+/* Fallback for browsers without container query support (older Safari/
+   Firefox releases): approximate the container-query tier off the
+   viewport, using a breakpoint high enough to stay safe with the
+   Navigation sidebar expanded (1280px viewport − ~256px sidebar ≈ 1024px
+   of content-box width, comfortably above the 960px threshold above).
+   `@supports not (container-type: inline-size)` keeps this from ever
+   double-applying alongside the container query in browsers that support
+   both. */
+@supports not (container-type: inline-size) {
+  @media (min-width: 1280px) {
+    .toolbar-grid {
+      grid-template-columns: minmax(320px, 1fr) minmax(240px, 520px) minmax(260px, auto);
+      grid-template-areas: "brand search actions";
+    }
   }
 }
 

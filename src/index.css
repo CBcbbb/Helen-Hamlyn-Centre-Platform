@@ -51,7 +51,15 @@ main {
 .toolbar-search { grid-area: search; min-width: 0; }
 .toolbar-actions { grid-area: actions; }
 
-@media (min-width: 768px) {
+/* Intermediate composition (brand+actions row, search on its own full
+   row) needs the same "actual available width" reasoning as the single-row
+   tier below: a `@media` viewport query can't see the Navigation sidebar or
+   split-screen/embedded constraints, only the full viewport. 640px is the
+   `app-main` container width (not viewport width) verified to fit brand +
+   actions on one row without crowding, with search given its own row below
+   rather than being squeezed. Kept below the 960px single-row threshold so
+   the two tiers never overlap or conflict. */
+@container app-main (min-width: 640px) {
   .toolbar-grid {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
@@ -77,14 +85,23 @@ main {
 }
 
 /* Fallback for browsers without container query support (older Safari/
-   Firefox releases): approximate the container-query tier off the
-   viewport, using a breakpoint high enough to stay safe with the
-   Navigation sidebar expanded (1280px viewport − ~256px sidebar ≈ 1024px
-   of content-box width, comfortably above the 960px threshold above).
-   `@supports not (container-type: inline-size)` keeps this from ever
-   double-applying alongside the container query in browsers that support
-   both. */
+   Firefox releases): approximate both container-query tiers off the
+   viewport. 900px ≈ the 640px intermediate container threshold plus the
+   Navigation sidebar's ~256px; 1280px ≈ the 960px single-row container
+   threshold plus the sidebar, comfortably above it. `@supports not
+   (container-type: inline-size)` keeps these from ever double-applying
+   alongside the container queries above in browsers that support both. */
 @supports not (container-type: inline-size) {
+  @media (min-width: 900px) {
+    .toolbar-grid {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "brand actions"
+        "search search";
+      align-items: center;
+    }
+  }
+
   @media (min-width: 1280px) {
     .toolbar-grid {
       grid-template-columns: minmax(320px, 1fr) minmax(240px, 520px) minmax(260px, auto);
